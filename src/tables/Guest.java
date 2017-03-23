@@ -3,19 +3,39 @@ package tables;
 /**
  * Created by Matthew on 2017-03-22.
  */
-public class Guest {
-    private int userid;
+public class Guest extends User implements Table{
+    private String membershipType;
+    private String address;
+    private int nightsStayedBefore;
 
-    public Guest(String username, String password, String name, String phonenumber, String email, int userid, String membershipType, String address, int nightsStayedBefore) {
-        super(userid, username, password, name, phonenumber);
-        this.userid = userid;
+    public Guest(String name, String phone, String email, int userid, String username, String password, String membershipType, String address, int nightsStayedBefore) {
+        super(name, phone, email, userid, username, password);
+        this.membershipType = membershipType;
+        this.address = address;
+        this.nightsStayedBefore = nightsStayedBefore;
     }
 
-    public int getGuestid() {
-        return userid;
+    public void setMembershipType(String membershipType) {
+        this.membershipType = membershipType;
     }
 
-    public void setGuestid(int userid) {
-        this.userid = userid;
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setNightsStayedBefore(int nightsStayedBefore) {
+        this.nightsStayedBefore = nightsStayedBefore;
+    }
+
+    public String getMembershipType() {
+        return membershipType;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public int getNightsStayedBefore() {
+        return nightsStayedBefore;
     }
 }

@@ -91,18 +91,13 @@ public class LoginScreen {
                         frame.dispose();
                     }
                     else if (loginConnection.isDoctor(userId)){
-                        Doctor newDoctor = loginConnection.getDoctor(userId);
-                        MainFrame primaryFrame = new MainFrame(newDoctor);
+                        Clerk newClerk = loginConnection.getClerk(userId);
+                        MainFrame primaryFrame = new MainFrame(newClerk);
                         frame.dispose();
                     }
                     else if (loginConnection.isNurse(userId)){
-                        Nurse newNurse = loginConnection.getNurse(userId);
-                        MainFrame primaryFrame = new MainFrame(newNurse);
-                        frame.dispose();
-                    }
-                    else if (loginConnection.isReceptionist(userId)){
-                        Receptionist newReceptionist = loginConnection.getReceptionist(userId);
-                        MainFrame primaryFrame = new MainFrame(newReceptionist);
+                        Manager newManager = loginConnection.getManager(userId);
+                        MainFrame primaryFrame = new MainFrame(newManager);
                         frame.dispose();
                     }
                 }
