@@ -30,97 +30,97 @@ public class LoginScreen {
 
 
     public LoginScreen(){
-        initialiseComponents();
+//        initialiseComponents();
     }
 
 
-    private static void initialiseComponents() {
-
-        loginConnection = Database.getInstance();
-
-        frame = new JFrame("Harambase Inc.");
-        frame.setSize(WIDTH, HEIGHT);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        JPanel panel = new JPanel();
-        frame.add(panel);
-        panel.setLayout(null);
-
-        userIDLabel = new JLabel("User ID");
-        userIDLabel.setBounds(10, 10, 80, 25);
-        panel.add(userIDLabel);
-        userIDText = new JTextField(20);
-        userIDText.setBounds(100, 10, 160, 25);
-        panel.add(userIDText);
-
-
-        passwordLabel = new JLabel("Password");
-        passwordLabel.setBounds(10, 40, 80, 25);
-        panel.add(passwordLabel);
-        passwordText = new JPasswordField(20);
-        passwordText.setBounds(100, 40, 160, 25);
-        panel.add(passwordText);
-
-
-        JButton loginButton = new JButton("login");
-        loginButton.setBounds(110, 80, 80, 25);
-        loginButton.addActionListener(new NewLoginListener());
-        panel.add(loginButton);
-
-        frame.setVisible(true);
-
-
-    }
-
-    // Inner-Class of LoginScreen: listens for actions that are performed on the login button, then returns a value based
-    // on the user provided input.
-    private static class NewLoginListener implements ActionListener {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            String givenUsername = userIDText.getText();
-            String givenPassword = passwordText.getText();
-
-            try {
-                int userId = Integer.parseInt(givenUsername);
-                if (loginConnection.checkUser(userId, givenPassword)){
-                    JOptionPane.showMessageDialog(null, "Login Successfully Attempted");
-                    if (loginConnection.isPatient(userId)) {
-                        Guest newGuest = loginConnection.getGuest(userId);
-                        MainFrame primaryFrame = new MainFrame(newGuest);
-                        frame.dispose();
-                    }
-                    else if (loginConnection.isDoctor(userId)){
-                        Clerk newClerk = loginConnection.getClerk(userId);
-                        MainFrame primaryFrame = new MainFrame(newClerk);
-                        frame.dispose();
-                    }
-                    else if (loginConnection.isNurse(userId)){
-                        Manager newManager = loginConnection.getManager(userId);
-                        MainFrame primaryFrame = new MainFrame(newManager);
-                        frame.dispose();
-                    }
-                }
-                else {
-                    JOptionPane.showMessageDialog(null, "Username or password is invalid, please try again.");
-                    userIDText.setText("");
-                    passwordText.setText("");
-                }
-            } catch (SQLException e1) {
-                JOptionPane.showMessageDialog(null, "Username or password is invalid, please try again.");
-                userIDText.setText("");
-                passwordText.setText("");
-                e1.printStackTrace();
-            }
-            catch (NumberFormatException e2){
-                JOptionPane.showMessageDialog(null, "Username or password is invalid, please try again.");
-                userIDText.setText("");
-                passwordText.setText("");
-                e2.printStackTrace();
-            }
-
-        }
-    }
+//    private static void initialiseComponents() {
+//
+//        loginConnection = Database.getInstance();
+//
+//        frame = new JFrame("Harambase Inc.");
+//        frame.setSize(WIDTH, HEIGHT);
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//
+//        JPanel panel = new JPanel();
+//        frame.add(panel);
+//        panel.setLayout(null);
+//
+//        userIDLabel = new JLabel("User ID");
+//        userIDLabel.setBounds(10, 10, 80, 25);
+//        panel.add(userIDLabel);
+//        userIDText = new JTextField(20);
+//        userIDText.setBounds(100, 10, 160, 25);
+//        panel.add(userIDText);
+//
+//
+//        passwordLabel = new JLabel("Password");
+//        passwordLabel.setBounds(10, 40, 80, 25);
+//        panel.add(passwordLabel);
+//        passwordText = new JPasswordField(20);
+//        passwordText.setBounds(100, 40, 160, 25);
+//        panel.add(passwordText);
+//
+//
+//        JButton loginButton = new JButton("login");
+//        loginButton.setBounds(110, 80, 80, 25);
+//        loginButton.addActionListener(new NewLoginListener());
+//        panel.add(loginButton);
+//
+//        frame.setVisible(true);
+//
+//
+//    }
+//
+//    // Inner-Class of LoginScreen: listens for actions that are performed on the login button, then returns a value based
+//    // on the user provided input.
+//    private static class NewLoginListener implements ActionListener {
+//
+//        @Override
+//        public void actionPerformed(ActionEvent e) {
+//            String givenUsername = userIDText.getText();
+//            String givenPassword = passwordText.getText();
+//
+//            try {
+//                int userId = Integer.parseInt(givenUsername);
+//                if (loginConnection.checkUser(userId, givenPassword)){
+//                    JOptionPane.showMessageDialog(null, "Login Successfully Attempted");
+//                    if (loginConnection.isPatient(userId)) {
+//                        Guest newGuest = loginConnection.getGuest(userId);
+//                        MainFrame primaryFrame = new MainFrame(newGuest);
+//                        frame.dispose();
+//                    }
+//                    else if (loginConnection.isDoctor(userId)){
+//                        Clerk newClerk = loginConnection.getClerk(userId);
+//                        MainFrame primaryFrame = new MainFrame(newClerk);
+//                        frame.dispose();
+//                    }
+//                    else if (loginConnection.isNurse(userId)){
+//                        Manager newManager = loginConnection.getManager(userId);
+//                        MainFrame primaryFrame = new MainFrame(newManager);
+//                        frame.dispose();
+//                    }
+//                }
+//                else {
+//                    JOptionPane.showMessageDialog(null, "Username or password is invalid, please try again.");
+//                    userIDText.setText("");
+//                    passwordText.setText("");
+//                }
+//            } catch (SQLException e1) {
+//                JOptionPane.showMessageDialog(null, "Username or password is invalid, please try again.");
+//                userIDText.setText("");
+//                passwordText.setText("");
+//                e1.printStackTrace();
+//            }
+//            catch (NumberFormatException e2){
+//                JOptionPane.showMessageDialog(null, "Username or password is invalid, please try again.");
+//                userIDText.setText("");
+//                passwordText.setText("");
+//                e2.printStackTrace();
+//            }
+//
+//        }
+//    }
 
 }
 
