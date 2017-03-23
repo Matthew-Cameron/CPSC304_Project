@@ -1,7 +1,7 @@
 package tables;
 
 /**
- * Created by Matthew on 2017-03-22.
+ * Created by Matthew on 2017-03-22
  */
 public class Gives_Tasks implements Table {
 
