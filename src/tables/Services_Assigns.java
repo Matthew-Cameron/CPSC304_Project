@@ -11,7 +11,7 @@ public class Services_Assigns implements Table {
     int floorNo;
 
 
-    public Gives_Tasks(String phone, int mUserid, String name, int floorNo){
+    public Services_Assigns(String phone, int mUserid, String name, int floorNo){
         this.mUserid = mUserid;
         this.phone = phone;
         this.name = name;
