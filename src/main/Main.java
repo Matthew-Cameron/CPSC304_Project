@@ -1,5 +1,7 @@
 package main;
 
+import GUI.LoginScreen;
+
 /**
  * Created by Matthew on 2017-03-22.
  */

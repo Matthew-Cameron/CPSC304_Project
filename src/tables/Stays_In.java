@@ -25,7 +25,7 @@ public class Stays_In implements Table {
         this.gUserid = gUserid;
     }
 
-    public void setFloorNo(int roomNo) {
+    public void setRoomNo(int roomNo) {
         this.roomNo = roomNo;
     }
 
@@ -37,12 +37,12 @@ public class Stays_In implements Table {
         this.fromDate = fromDate;
     }
 
-    public int getmUserId() {
-        return mUserid;
+    public int getgUserId() {
+        return gUserid;
     }
 
-    public int getFloorNo() {
-        return floorNo;
+    public int getRoomNo() {
+        return roomNo;
     }
 
     public Date getToDate() {
