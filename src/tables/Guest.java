@@ -8,8 +8,8 @@ public class Guest extends User implements Table{
     private String address;
     private int nightsStayedBefore;
 
-    public Guest(String name, String phone, String email, int userid, String username, String password, String membershipType, String address, int nightsStayedBefore) {
-        super(name, phone, email, userid, username, password);
+    public Guest(String name, String phone, int userid, String username, String password, String membershipType, String address, int nightsStayedBefore) {
+        super(name, phone, userid, username, password);
         this.membershipType = membershipType;
         this.address = address;
         this.nightsStayedBefore = nightsStayedBefore;
@@ -26,6 +26,8 @@ public class Guest extends User implements Table{
     public void setNightsStayedBefore(int nightsStayedBefore) {
         this.nightsStayedBefore = nightsStayedBefore;
     }
+
+
 
     public String getMembershipType() {
         return membershipType;

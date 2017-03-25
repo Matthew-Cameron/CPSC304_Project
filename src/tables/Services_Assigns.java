@@ -5,16 +5,14 @@ package tables;
  */
 public class Services_Assigns implements Table {
 
-    String phone;
-    String name;
-    int mUserid;
-    int floorNo;
+    private int sin;
+    private int mUserid;
+    private int floorNo;
 
 
-    public Services_Assigns(String phone, int mUserid, String name, int floorNo){
+    public Services_Assigns(int sin, int mUserid,  int floorNo){
+        this.sin = sin;
         this.mUserid = mUserid;
-        this.phone = phone;
-        this.name = name;
         this.floorNo = floorNo;
     }
 
@@ -26,14 +24,12 @@ public class Services_Assigns implements Table {
         this.floorNo = floorNo;
     }
 
-    public void setName(String name) {
-        this.name = name;
+      public void setSin(int sin) {
+        this.sin = sin;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
 
+  
     public int getmUserId() {
         return mUserid;
     }
@@ -42,11 +38,10 @@ public class Services_Assigns implements Table {
         return floorNo;
     }
 
-    public String getName() {
-        return name;
+    public int getSin() {
+        return sin;
     }
 
-    public String getPhone() {
-        return phone;
-    }
+
+
 }

@@ -6,8 +6,8 @@ package tables;
 public class Manager extends User implements Table{
     private int wage;
 
-    public Manager(String name, String phone, String email, int userid, String username, String password, int wage) {
-        super(name, phone, email, userid, username, password);
+    public Manager(String name, String phone, int userid, String username, String password, int wage) {
+        super(name, phone, userid, username, password);
         this.wage = wage;
     }
 

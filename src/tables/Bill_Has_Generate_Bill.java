@@ -14,17 +14,17 @@ public class Bill_Has_Generate_Bill implements Table {
     private Timestamp day;
     private int gUserid;
     private int roomNo;
-    private int cUserid;
+    private int mUserid;
 
 
-    public Bill_Has_Generate_Bill(float amountDue, int billId, float amountPaid, Timestamp day, int gUserid, int roomNo, int cUserid){
+    public Bill_Has_Generate_Bill(float amountDue, int billId, float amountPaid, Timestamp day, int gUserid, int roomNo, int mUserid){
         this.amountDue = amountDue;
         this.billId = billId;
         this.amountPaid = amountPaid;
         this.day = day;
         this.gUserid = gUserid;
         this.roomNo = roomNo;
-        this.cUserid = cUserid;
+        this.mUserid = mUserid;
     }
 
     public void setAmountDue(float amountDue) {
@@ -52,34 +52,34 @@ public class Bill_Has_Generate_Bill implements Table {
     }
 
     public void setcUserid(int cUserid) {
-        this.cUserid = cUserid;
+        this.mUserid = mUserid;
     }
 
 
-    public float getAmountDue(float amountDue){ return amountDue;}
+    public float getAmountDue(){ return amountDue;}
 
-    public int getBillId(int billId) {
+    public int getBillId() {
         return billId;
     }
 
-    public float getAmountPaid(float amountPaid) {
+    public float getAmountPaid() {
         return amountPaid;
     }
 
-    public Timestamp getDay(Timestamp day) {
+    public Timestamp getDay() {
         return day;
     }
 
-    public int getgUserid(int gUserid) {
+    public int getgUserid() {
         return gUserid;
     }
 
-    public int getRoomNo(int roomNo) {
+    public int getRoomNo() {
         return roomNo;
     }
 
-    public int getcUserid(int cUserid) {
-        return cUserid;
+    public int getmUserid() {
+        return mUserid;
     }
 
 }
