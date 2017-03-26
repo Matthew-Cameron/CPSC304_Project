@@ -10,7 +10,7 @@ public class Reserve_Room_Has_Floor1 implements Table {
     private int cost;
     private String type;
 
-    public Reserve_Room_Has_Floor(int cost, String type){
+    public Reserve_Room_Has_Floor1(int cost, String type){
         this.cost = cost;
         this.type = type;
     }

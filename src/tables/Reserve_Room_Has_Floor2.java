@@ -14,8 +14,9 @@ public class Reserve_Room_Has_Floor2 implements Table {
     private int floorNo;
     private int roomNo;
     private String type;
+    private int numOfBeds;
 
-    public Reserve_Room_Has_Floor(int gUserId, Timestamp toDate, Timestamp fromDate, int bookingNo, int floorNo, int roomNo, String type){
+    public Reserve_Room_Has_Floor2(int gUserId, Timestamp toDate, Timestamp fromDate, int bookingNo, int floorNo, int roomNo, String type, int numOfBeds){
         this.gUserId = gUserId;
         this.toDate = toDate;
         this.fromDate = fromDate;
@@ -23,6 +24,7 @@ public class Reserve_Room_Has_Floor2 implements Table {
         this.floorNo = floorNo;
         this.roomNo = roomNo;
         this.type = type;
+        this.numOfBeds = numOfBeds;
     }
 
     public void setgUserId(int gUserId){ this.gUserId = gUserId; }
@@ -39,6 +41,8 @@ public class Reserve_Room_Has_Floor2 implements Table {
 
     public void setType(String type){ this.type = type; }
     
+    public void setNumofBeds(int roomNo){ this.numOfBeds = numOfBeds; }
+
     public int getgUserId(){ return gUserId; }
 
     public Timestamp getToDate(){ return toDate; }
@@ -52,4 +56,6 @@ public class Reserve_Room_Has_Floor2 implements Table {
     public int getRoomNo(){ return roomNo; }
 
     public String getType(){ return type; }
+
+     public int getNumOfBeds(){ return numOfBeds; }
 }
