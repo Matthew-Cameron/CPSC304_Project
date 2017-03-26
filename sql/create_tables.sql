@@ -1,13 +1,13 @@
-drop table users;
-drop table manager;
-drop table guest;
-drop table floor;
-drop table reserve_Room_Has_Floor1;
-drop table housekeeper2;
-drop table services_Assigns
-drop table reserve_Room_Has_Floor2;
-drop table bill_Has_Generate_Bill;
-drop table discounts;
+DROP TABLE ORA_G0L0B.DISCOUNTS;
+DROP TABLE ORA_G0L0B.SERVICES_ASSIGNS;
+DROP TABLE ORA_G0L0B.BILL_HAS_GENERATE_BILL;
+DROP TABLE ORA_G0L0B.RESERVE_ROOM_HAS_FLOOR2;
+DROP TABLE ORA_G0L0B.HOUSEKEEPER2;
+DROP TABLE ORA_G0L0B.MANAGER;
+DROP TABLE ORA_G0L0B.RESERVE_ROOM_HAS_FLOOR1;
+DROP TABLE ORA_G0L0B.FLOOR;
+DROP TABLE ORA_G0L0B.GUEST;
+DROP TABLE ORA_G0L0B.USERS;
 
 drop trigger checkAmount;
 

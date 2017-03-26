@@ -58,7 +58,7 @@ public class User implements Table{
         return phone;
     }
 
-    public boolean getType(User guy)
+    public boolean getType()
     {
         //is this person a privileged user (ie. Manager)
         //or 'normal' (ie. Customer)

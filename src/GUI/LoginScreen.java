@@ -4,6 +4,7 @@ package GUI;
  * Created by Matthew on 2017-03-22.
  */
 import database.Database;
+import tables.User;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -73,7 +74,7 @@ public class LoginScreen {
                 ResultSet rs = con.createStatement().executeQuery("SELECT * from user_tables");
                 while(rs.next())
                 {
-                    System.out.println("");
+
                 }
             }
             catch (Exception saf)
