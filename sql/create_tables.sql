@@ -23,7 +23,7 @@ SEGMENT CREATION IMMEDIATE;
 create table floor(floorNo int, primary key (floorNo))
 SEGMENT CREATION IMMEDIATE;
 
-create table reserve_Room_Has_Floor1(cost decimal(6,2), type varchar(20))
+create table reserve_Room_Has_Floor1(cost decimal(6,2), typeOfRoom varchar(20), primary key(typeOfRoom))
 SEGMENT CREATION IMMEDIATE;
 
 create table housekeeper2(wage decimal(4,2),cleaningSpeciality varchar(20), phoneNo varchar(10), name varchar(30), sin int, primary key(sin))
@@ -32,7 +32,7 @@ SEGMENT CREATION IMMEDIATE;
 create table services_Assigns(sin int, floorNo int,  mUserID int not null, primary key(sin, floorNo), foreign key(mUserID) references manager(UserID), foreign key(sin) references housekeeper2(SIN) on delete cascade, foreign key(floorNo) references floor(floorNo))
 SEGMENT CREATION IMMEDIATE;
 
-create table reserve_Room_Has_Floor2(roomNo int, type varchar(20),  floorNo int not null, gUserID int, bookingNo int, fromdate date, todate date, noOfBeds int, primary key(roomNo), foreign key(floorNo) references floor(floorNo), foreign key(gUserID) references guest(userID), foreign key(type) references reserve_Room_Has_Floor1(type))
+create table reserve_Room_Has_Floor2(roomNo int, typeOfRoom varchar(20),  floorNo int not null, gUserID int, bookingNo int, fromdate date, todate date, numOfBeds int, primary key(roomNo), foreign key(floorNo) references floor(floorNo), foreign key(gUserID) references guest(userID), foreign key(type) references reserve_Room_Has_Floor1(typeOfRoom))
 SEGMENT CREATION IMMEDIATE;
 
 create table bill_Has_Generate_Bill(amountDue decimal(7,2), billID int, amountPaid decimal(7,2), date date, gUserID int not null, roomNo int not null, mUserID int not null, primary key(billID), foreign key(gUserID) references guest(userID), foreign key(mUserID) references manager(userID), foreign key(roomNo) references reserve_Room_Has_Floor2(roomNo))
