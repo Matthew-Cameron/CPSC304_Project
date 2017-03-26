@@ -11,17 +11,17 @@ public class Bill_Has_Generate_Bill implements Table {
     private float amountDue;
     private int billId;
     private float amountPaid;
-    private Timestamp day;
+    private Timestamp dateOfBill;
     private int gUserid;
     private int roomNo;
     private int mUserid;
 
 
-    public Bill_Has_Generate_Bill(float amountDue, int billId, float amountPaid, Timestamp day, int gUserid, int roomNo, int mUserid){
+    public Bill_Has_Generate_Bill(float amountDue, int billId, float amountPaid, Timestamp dateOfBill, int gUserid, int roomNo, int mUserid){
         this.amountDue = amountDue;
         this.billId = billId;
         this.amountPaid = amountPaid;
-        this.day = day;
+        this.dayOfBill = dayOfBill;
         this.gUserid = gUserid;
         this.roomNo = roomNo;
         this.mUserid = mUserid;
@@ -39,7 +39,7 @@ public class Bill_Has_Generate_Bill implements Table {
         this.amountPaid = amountPaid;
     }
 
-    public void setDay(Timestamp day) {
+    public void setDateOfBill(Timestamp dateOfBill) {
         this.day = day;
     }
 
@@ -66,8 +66,8 @@ public class Bill_Has_Generate_Bill implements Table {
         return amountPaid;
     }
 
-    public Timestamp getDay() {
-        return day;
+    public Timestamp getDateOfBill() {
+        return getDateOfBill;
     }
 
     public int getgUserid() {

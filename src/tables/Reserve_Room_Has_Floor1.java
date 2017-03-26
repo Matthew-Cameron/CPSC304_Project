@@ -8,11 +8,11 @@ import java.sql.Timestamp;
 public class Reserve_Room_Has_Floor1 implements Table {
 
     private int cost;
-    private String type;
+    private String typeOfRoom;
 
-    public Reserve_Room_Has_Floor1(int cost, String type){
+    public Reserve_Room_Has_Floor1(int cost, String typeOfRoom){
         this.cost = cost;
-        this.type = type;
+        this.type = typeOfRoom;
     }
 
     public void setCost(int cost){ this.cost = cost; }
@@ -21,5 +21,5 @@ public class Reserve_Room_Has_Floor1 implements Table {
     
     public int getCost(){ return cost; }
 
-    public String getType(){ return type; }
+    public String getTypeOfRoom(){ return typeOfRoom; }
 }
