@@ -11,13 +11,13 @@ public class Bill_Has_Generate_Bill implements Table {
     private float amountDue;
     private int billId;
     private float amountPaid;
-    private Timestamp dayOfBill;
+    private java.sql.Date dayOfBill;
     private int gUserid;
     private int roomNo;
     private int mUserid;
 
 
-    public Bill_Has_Generate_Bill(float amountDue, int billId, float amountPaid, Timestamp dateOfBill, int gUserid, int roomNo, int mUserid){
+    public Bill_Has_Generate_Bill(float amountDue, int billId, float amountPaid, java.sql.Date dateOfBill, int gUserid, int roomNo, int mUserid){
         this.amountDue = amountDue;
         this.billId = billId;
         this.amountPaid = amountPaid;
@@ -39,7 +39,7 @@ public class Bill_Has_Generate_Bill implements Table {
         this.amountPaid = amountPaid;
     }
 
-    public void setDateOfBill(Timestamp dayOfBill) {
+    public void setDateOfBill(java.sql.Date dayOfBill) {
         this.dayOfBill = dayOfBill;
     }
 
@@ -66,7 +66,7 @@ public class Bill_Has_Generate_Bill implements Table {
         return amountPaid;
     }
 
-    public Timestamp getDateOfBill() {
+    public Date getDateOfBill() {
         return dayOfBill;
     }
 

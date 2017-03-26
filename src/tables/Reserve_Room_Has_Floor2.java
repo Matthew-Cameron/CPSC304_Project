@@ -1,5 +1,6 @@
 package tables;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
@@ -8,15 +9,15 @@ import java.sql.Timestamp;
 public class Reserve_Room_Has_Floor2 implements Table {
 
     private int gUserId;
-    private Timestamp toDate;
-    private Timestamp fromDate;
+    private Date toDate;
+    private Date fromDate;
     private int bookingNo;
     private int floorNo;
     private int roomNo;
     private String typeOfRoom;
     private int numOfBeds;
 
-    public Reserve_Room_Has_Floor2(int gUserId, Timestamp toDate, Timestamp fromDate, int bookingNo, int floorNo, int roomNo, String typeOfRoom, int numOfBeds){
+    public Reserve_Room_Has_Floor2(int gUserId, Date toDate, Date fromDate, int bookingNo, int floorNo, int roomNo, String typeOfRoom, int numOfBeds){
         this.gUserId = gUserId;
         this.toDate = toDate;
         this.fromDate = fromDate;
@@ -29,9 +30,9 @@ public class Reserve_Room_Has_Floor2 implements Table {
 
     public void setgUserId(int gUserId){ this.gUserId = gUserId; }
 
-    public void setToDate(Timestamp toDate){ this.toDate = toDate; }
+    public void setToDate(Date toDate){ this.toDate = toDate; }
 
-    public void setFromDate(Timestamp fromDate){ this.fromDate = fromDate; }
+    public void setFromDate(Date fromDate){ this.fromDate = fromDate; }
 
     public void setBookingNo(int bookingNo){ this.bookingNo = bookingNo; }
 
@@ -45,9 +46,9 @@ public class Reserve_Room_Has_Floor2 implements Table {
 
     public int getgUserId(){ return gUserId; }
 
-    public Timestamp getToDate(){ return toDate; }
+    public Date getToDate(){ return toDate; }
 
-    public Timestamp getFromDate(){ return fromDate; }
+    public Date getFromDate(){ return fromDate; }
 
     public int getBookingNo(){ return bookingNo; }
 
