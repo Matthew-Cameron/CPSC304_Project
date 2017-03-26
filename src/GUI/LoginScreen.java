@@ -4,6 +4,8 @@ package GUI;
  * Created by Matthew on 2017-03-22.
  */
 import database.Database;
+import tables.Guest;
+import tables.Manager;
 import tables.User;
 
 import javax.swing.*;
@@ -53,32 +55,33 @@ public class LoginScreen {
         frame.setVisible(true);
     }
 
-     //Inner-Class of LoginScreen: listens for actions that are performed on the login button, then returns a value based
-     //on the user provided input.
     private static class NewLoginListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            String givenUsername = username.getText();
-            String givenPassword = password.getText();
-
-            System.out.print("Got username " + givenUsername + " and password ");
-            for (int i = 0; i < givenPassword.length(); i++) System.out.print('*');
-            System.out.println();
 
             Connection con = loginConnection.getConnection();
             try
             { //we know, we know, storing plaintext passwords in the database is bad
                 int userid = 0;
-                ResultSet rs = con.createStatement().executeQuery("SELECT userid, name from users where username ='" + givenUsername + "' and password ='" + givenPassword + "'");
+                ResultSet rs = con.createStatement().executeQuery("SELECT userid, name from users where username ='" + username.getText() + "' and password ='" + password.getText() + "'");
                 if(rs.next())
                 {
                     userid = rs.getInt("userid");
-                    System.out.println("Username " + givenUsername + " has id " + userid);
+                    System.out.println("Username " + username.getText() + " has id " + userid);
                     ResultSet checkMan = con.createStatement().executeQuery("SELECT * from manager where userid =" + userid);
                     boolean isAManglement = checkMan.next();
-                    JOptionPane.showMessageDialog(frame, "Welcome " + rs.getString("name") + ", you have access level " + ((isAManglement) ? "Manager" : "Customer"), "Login successful", JOptionPane.PLAIN_MESSAGE);
-                    return;
+                    //JOptionPane.showMessageDialog(frame, "Welcome " + rs.getString("name") + ", you have access level " + ((isAManglement) ? "Manager" : "Customer"), "Login successful", JOptionPane.PLAIN_MESSAGE);
+                    HomeScreen hs;
+                    if(isAManglement)
+                    {
+                        hs = new HomeScreen(new Manager(null,null,0,null,null,0));
+                    }
+                    else
+                    {
+                        hs = new HomeScreen(new Guest(null,null,0,null,null, null, null, 0));
+                    }
+                    frame.dispose();
                 }
                 else
                 {
@@ -88,16 +91,6 @@ public class LoginScreen {
             catch (Exception saf)
             {
                 System.out.println(saf.getMessage());
-            }
-
-            try
-            {
-
-            }
-            catch(Exception ef)
-            {
-                System.out.println(ef.getMessage());
-                System.out.println(ef.getStackTrace());
             }
         }
     }
