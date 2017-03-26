@@ -70,17 +70,8 @@ public class LoginScreen {
                     userid = rs.getInt("userid");
                     System.out.println("Username " + username.getText() + " has id " + userid);
                     ResultSet checkMan = con.createStatement().executeQuery("SELECT * from manager where userid =" + userid);
-                    boolean isAManglement = checkMan.next();
                     //JOptionPane.showMessageDialog(frame, "Welcome " + rs.getString("name") + ", you have access level " + ((isAManglement) ? "Manager" : "Customer"), "Login successful", JOptionPane.PLAIN_MESSAGE);
-                    HomeScreen hs;
-                    if(isAManglement)
-                    {
-                        hs = new HomeScreen(new Manager(null,null,0,null,null,0));
-                    }
-                    else
-                    {
-                        hs = new HomeScreen(new Guest(null,null,0,null,null, null, null, 0));
-                    }
+                    HomeScreen hs = new HomeScreen(userid, checkMan.next());
                     frame.dispose();
                 }
                 else

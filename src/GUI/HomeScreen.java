@@ -26,54 +26,58 @@ public class HomeScreen {
     private static JPanel schedulePanel;
     private static JPanel activityPannel;
 
+
+
     // Constructs homescreen for a manager
-    public HomeScreen(Manager managerUser){
+    public HomeScreen(int userId, boolean isManager){
         mainConnection = Database.getInstance();
-        System.out.println("Manager: " + managerUser.getName());
+        if(isManager)
+        {
+            //TODO: given userid, query database for info
+            Manager managerUser = null;
+            System.out.println("Manager: " + managerUser.getName());
 
-        generateStructure(managerUser);
+            generateStructure(managerUser);
 
-        JLabel name = new JLabel("Name: " + managerUser.getName());
-        informationPanel.add(name);
-        JLabel username = new JLabel("Username: " + managerUser.getUsername());
-        informationPanel.add(username);
-        JLabel id = new JLabel("ID: " + managerUser.getUserId());
-        informationPanel.add(id);
-        JLabel phone = new JLabel("Phone: " + managerUser.getPhone());
-        informationPanel.add(phone);
-        JLabel wage = new JLabel("Wage: " + managerUser.getWage());
-        informationPanel.add(wage);
-        JLabel userType = new JLabel("User Type: Manager");
-        informationPanel.add(userType);
+            JLabel name = new JLabel("Name: " + managerUser.getName());
+            informationPanel.add(name);
+            JLabel username = new JLabel("Username: " + managerUser.getUsername());
+            informationPanel.add(username);
+            JLabel id = new JLabel("ID: " + managerUser.getUserId());
+            informationPanel.add(id);
+            JLabel phone = new JLabel("Phone: " + managerUser.getPhone());
+            informationPanel.add(phone);
+            JLabel wage = new JLabel("Wage: " + managerUser.getWage());
+            informationPanel.add(wage);
+            JLabel userType = new JLabel("User Type: Manager");
+            informationPanel.add(userType);
+        }
+        else
+        {
+            //TODO: given userid, query database for info
+            Guest guestUser = null;
+            System.out.println("Guest: " + guestUser.getName());
+            generateStructure(guestUser);
 
+            JLabel name = new JLabel("Name: " + guestUser.getName());
+            informationPanel.add(name);
+            JLabel username = new JLabel("Username: " + guestUser.getUsername());
+            informationPanel.add(username);
+            JLabel id = new JLabel("ID: " + guestUser.getUserId());
+            informationPanel.add(id);
+            JLabel phone = new JLabel("Phone: " + guestUser.getPhone());
+            informationPanel.add(phone);
+            JLabel mType = new JLabel("Membership Type: " + guestUser.getMembershipType());
+            informationPanel.add(mType);
+            JLabel address = new JLabel("Address: " + guestUser.getAddress());
+            informationPanel.add(address);
+            JLabel nightsStayedBefore = new JLabel("Nights Stayed Before: " + guestUser.getNightsStayedBefore());
+            informationPanel.add(nightsStayedBefore);
+            JLabel userType = new JLabel("User Type: Guest");
+            informationPanel.add(userType);
+        }
         frame.setVisible(true);
     }
-
-    // Constructs homescreen for a guest
-    public HomeScreen(Guest guestUser){
-        mainConnection = Database.getInstance();
-        generateStructure(guestUser);
-
-        JLabel name = new JLabel("Name: " + guestUser.getName());
-        informationPanel.add(name);
-        JLabel username = new JLabel("Username: " + guestUser.getUsername());
-        informationPanel.add(username);
-        JLabel id = new JLabel("ID: " + guestUser.getUserId());
-        informationPanel.add(id);
-        JLabel phone = new JLabel("Phone: " + guestUser.getPhone());
-        informationPanel.add(phone);
-        JLabel mType = new JLabel("Membership Type: " + guestUser.getMembershipType());
-        informationPanel.add(mType);
-        JLabel address = new JLabel("Address: " + guestUser.getAddress());
-        informationPanel.add(address);
-        JLabel nightsStayedBefore = new JLabel("Nights Stayed Before: " + guestUser.getNightsStayedBefore());
-        informationPanel.add(nightsStayedBefore);
-        JLabel userType = new JLabel("User Type: Guest");
-        informationPanel.add(userType);
-
-        frame.setVisible(true);
-    }
-
 
     // Creates layout of homescreen
     private void generateStructure(User u){
