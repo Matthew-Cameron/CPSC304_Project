@@ -17,9 +17,13 @@ public class Database {
 
     private Database() {
         try {
+            //This requires SSH tunneling and VPN/campus wifi/campus ethernet
+            //SSH: use PuTTY
+            //port: 1522
+            //server: dbhost.ugrad.cs.ubc.ca:1522
             String connectionURL = "jdbc:oracle:thin:@localhost:1522:ug";
-            String username = "ora_h8y9a";
-            String password = "a37594132";
+            String username = "ora_g0l0b";
+            String password = "a20090156";
             DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
             connection = DriverManager.getConnection(connectionURL, username, password);
         }
