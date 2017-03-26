@@ -27,8 +27,6 @@ public class Guest extends User implements Table{
         this.nightsStayedBefore = nightsStayedBefore;
     }
 
-
-
     public String getMembershipType() {
         return membershipType;
     }

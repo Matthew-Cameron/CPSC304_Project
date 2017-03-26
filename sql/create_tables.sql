@@ -9,8 +9,6 @@ DROP TABLE ORA_G0L0B.FLOOR;
 DROP TABLE ORA_G0L0B.GUEST;
 DROP TABLE ORA_G0L0B.USERS;
 
-drop trigger checkAmount;
-
 create table users(userID int, userName varchar(30), password varchar(30), phoneNo varchar(10), name varchar(30), primary key(userID))
 SEGMENT CREATION IMMEDIATE;
 
