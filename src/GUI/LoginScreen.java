@@ -22,8 +22,8 @@ public class LoginScreen {
     public LoginScreen(){
         loginConnection = Database.getInstance();
 
-        frame = new JFrame("Authentication");
-        frame.setSize(400, 225);    //16:9
+        frame = new JFrame("Login");
+        frame.setSize(800, 450);    //16:9
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         JPanel panel = new JPanel();
@@ -31,21 +31,21 @@ public class LoginScreen {
         panel.setLayout(null);
 
         JLabel userIDLabel = new JLabel("Username");
-        userIDLabel.setBounds(10, 10, 80, 25);
+        userIDLabel.setBounds(200, 100, 80, 25);
         panel.add(userIDLabel);
         username = new JTextField(20);
-        username.setBounds(100, 10, 160, 25);
+        username.setBounds(290, 100, 260, 25);
         panel.add(username);
 
         JLabel passwordLabel = new JLabel("Password");
-        passwordLabel.setBounds(10, 40, 80, 25);
+        passwordLabel.setBounds(200, 150, 80, 25);
         panel.add(passwordLabel);
         password = new JPasswordField(20);
-        password.setBounds(100, 40, 160, 25);
+        password.setBounds(290, 150, 260, 25);
         panel.add(password);
 
         JButton loginButton = new JButton("Login");
-        loginButton.setBounds(110, 80, 80, 25);
+        loginButton.setBounds(330, 200, 160, 30);
         loginButton.addActionListener(new NewLoginListener());
         panel.add(loginButton);
 
