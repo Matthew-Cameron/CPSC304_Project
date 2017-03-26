@@ -11,7 +11,7 @@ public class Bill_Has_Generate_Bill implements Table {
     private float amountDue;
     private int billId;
     private float amountPaid;
-    private Timestamp dateOfBill;
+    private Timestamp dayOfBill;
     private int gUserid;
     private int roomNo;
     private int mUserid;
@@ -39,8 +39,8 @@ public class Bill_Has_Generate_Bill implements Table {
         this.amountPaid = amountPaid;
     }
 
-    public void setDateOfBill(Timestamp dateOfBill) {
-        this.day = day;
+    public void setDateOfBill(Timestamp dayOfBill) {
+        this.dayOfBill = dayOfBill;
     }
 
     public void setgUserid(int gUserid) {
@@ -67,7 +67,7 @@ public class Bill_Has_Generate_Bill implements Table {
     }
 
     public Timestamp getDateOfBill() {
-        return getDateOfBill;
+        return dayOfBill;
     }
 
     public int getgUserid() {

@@ -12,12 +12,12 @@ public class Reserve_Room_Has_Floor1 implements Table {
 
     public Reserve_Room_Has_Floor1(int cost, String typeOfRoom){
         this.cost = cost;
-        this.type = typeOfRoom;
+        this.typeOfRoom = typeOfRoom;
     }
 
     public void setCost(int cost){ this.cost = cost; }
 
-    public void setType(String type){ this.type = type; }
+    public void setType(String type){ this.typeOfRoom = type; }
     
     public int getCost(){ return cost; }
 
