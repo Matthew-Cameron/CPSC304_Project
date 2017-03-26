@@ -57,4 +57,11 @@ public class User implements Table{
     public String getPhone() {
         return phone;
     }
+
+    public boolean getType(User guy)
+    {
+        //is this person a privileged user (ie. Manager)
+        //or 'normal' (ie. Customer)
+        return true;
+    }
 }

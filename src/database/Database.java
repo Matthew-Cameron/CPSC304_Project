@@ -22,24 +22,30 @@ public class Database {
             //SSH: use PuTTY
             //port: 1522
             //server: dbhost.ugrad.cs.ubc.ca:1522
-            String connectionURL = "jdbc:oracle:thin:@localhost:1522:ug";
-            String username = "ora_g0l0b";
-            String password = "a20090156";
             DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-            connection = DriverManager.getConnection(connectionURL, username, password);
+            String connectionURL = "jdbc:oracle:thin:@localhost:1522:ug";
+            connection = DriverManager.getConnection(connectionURL, "ora_g0l0b", "a20090156");
             System.out.println("WE ARE CONNECTED");
         }
         catch (SQLException e) {
-            System.out.println("Message: " + e.getMessage());
-            System.exit(-1);
+            System.out.println("FISSION MAILED");
+            System.out.println(e.getMessage());
+            System.exit(1);
         }
     }
 
     public static Database getInstance(){
-        if (instance == null) {
-            instance = new Database();
-        }
+        if (instance == null) instance = new Database();
         return instance;
+    }
+
+    public Connection getConnection() {
+        return connection;
+    }
+
+    public int createQuery(String q)
+    {
+        return 0;
     }
 }
 
