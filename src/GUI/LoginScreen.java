@@ -30,6 +30,7 @@ public class LoginScreen {
 
 
     public LoginScreen(){
+        Database dat = Database.getInstance();
 //        initialiseComponents();
     }
 

@@ -10,7 +10,7 @@ public class Housekeeper2 implements Table{
     private String phone;
     private int sin;
 
-    public HouseKeeper2(String name, String phone, int sin,  int wage, String cleaningSpecialty) {
+    public Housekeeper2(String name, String phone, int sin,  int wage, String cleaningSpecialty) {
     	this.name = name;
     	this.phone = phone;
     	this.sin = sin;

@@ -1,5 +1,6 @@
 package database;
 
+
 /**
  * Created by Matthew on 2017-03-22.
  */
@@ -26,6 +27,7 @@ public class Database {
             String password = "a20090156";
             DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
             connection = DriverManager.getConnection(connectionURL, username, password);
+            System.out.println("WE ARE CONNECTED");
         }
         catch (SQLException e) {
             System.out.println("Message: " + e.getMessage());
