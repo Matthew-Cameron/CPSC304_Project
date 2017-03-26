@@ -63,18 +63,26 @@ public class LoginScreen {
             String givenPassword = password.getText();
 
             System.out.print("Got username " + givenUsername + " and password ");
-            for (int i = 0; i < givenPassword.length(); i++) {
-                System.out.print('*');
-            }
+            for (int i = 0; i < givenPassword.length(); i++) System.out.print('*');
             System.out.println();
 
             Connection con = loginConnection.getConnection();
             try
-            {
-                ResultSet rs = con.createStatement().executeQuery("SELECT * from user_tables");
-                while(rs.next())
+            { //we know, we know, storing plaintext passwords in the database is bad
+                int userid = 0;
+                ResultSet rs = con.createStatement().executeQuery("SELECT userid, name from users where username ='" + givenUsername + "' and password ='" + givenPassword + "'");
+                if(rs.next())
                 {
-
+                    userid = rs.getInt("userid");
+                    System.out.println("Username " + givenUsername + " has id " + userid);
+                    ResultSet checkMan = con.createStatement().executeQuery("SELECT * from manager where userid =" + userid);
+                    boolean isAManglement = checkMan.next();
+                    JOptionPane.showMessageDialog(frame, "Welcome " + rs.getString("name") + ", you have access level " + ((isAManglement) ? "Manager" : "Customer"), "Login successful", JOptionPane.PLAIN_MESSAGE);
+                    return;
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(frame, "Username or password is incorrect", "Login failed", JOptionPane.ERROR_MESSAGE);
                 }
             }
             catch (Exception saf)
