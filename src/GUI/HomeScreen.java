@@ -158,7 +158,7 @@ public class HomeScreen {
                 {
                     System.out.println("Room number " + rs.getString("ROOMNO") + ", type of room " + rs.getString("TYPEOFROOM") + ", floor number " + rs.getInt("FLOORNO") + ", number of beds " + rs.getInt("NUMOFBEDS"));
                 }
-                ResultDisplay rd = new ResultDisplay(Arrays.asList("Room Number", "Type of Room", "Floor No", "Num of Beds"), rs);
+                ResultDisplay rd = new ResultDisplay(rs, "Rooms Available", Arrays.asList("Room Number", "Type of Room", "Floor No", "Num of Beds"), Arrays.asList("ROOMNO", "TYPEOFROOM", "FLOORNO", "NUMOFBEDS"));
             }
             catch(SQLException vre1)
             {
@@ -193,7 +193,6 @@ public class HomeScreen {
             try
             {
                 ResultSet rs = con.createStatement().executeQuery("select * from user_tables");
-                ResultDisplay avs = new ResultDisplay(null, null);
 
             }
             catch(SQLException vre1)

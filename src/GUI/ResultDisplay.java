@@ -24,8 +24,7 @@ public class ResultDisplay {
     private static JPanel mainPanel;
     private static JPanel schedulePanel;
 
-    public ResultDisplay(List<String> columnNames, ResultSet results){
-        System.out.println("Start RD");
+    public ResultDisplay(ResultSet results, String title, List<String> friendlyNames, List<String> realNames){
 
         frame = new JFrame("Available Rooms");
         frame.setSize(WIDTH,HEIGHT);
@@ -53,7 +52,6 @@ public class ResultDisplay {
         schedulePanel.add(scrollPane, BorderLayout.CENTER);
         overlaySchedulesPanel.add(schedulePanel);
         frame.setVisible(true);
-        System.out.println("Done RD");
     }
 }
 
