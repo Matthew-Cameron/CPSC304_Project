@@ -69,6 +69,7 @@ public class HomeScreen {
                 informationPanel.add(userType);
 
                 JButton seeRes = new JButton("View All Reservations");
+                seeRes.addActionListener(null);
                 buttonPanel.add(seeRes);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
@@ -147,6 +148,8 @@ public class HomeScreen {
         buttonPanel.setLayout(new FlowLayout());
     }
 
+    //Button actions from here on
+
     private static class viewRooms implements ActionListener
     {
         @Override
@@ -154,17 +157,15 @@ public class HomeScreen {
             try
             {
                 ResultSet rs = con.createStatement().executeQuery("select r.roomno, r.typeofroom, r.floorno, r.numofbeds from reserve_room_has_floor2 r where r.guserid is null");
-                while(rs.next())
-                {
-                    System.out.println("Room number " + rs.getString("ROOMNO") + ", type of room " + rs.getString("TYPEOFROOM") + ", floor number " + rs.getInt("FLOORNO") + ", number of beds " + rs.getInt("NUMOFBEDS"));
-                }
-                ResultDisplay rd = new ResultDisplay(rs, "Rooms Available", Arrays.asList("Room Number", "Type of Room", "Floor No", "Num of Beds"), Arrays.asList("ROOMNO", "TYPEOFROOM", "FLOORNO", "NUMOFBEDS"));
+                ResultSet countrs = con.createStatement().executeQuery("select count(*) from reserve_room_has_floor2 where guserid is null");
+                countrs.next();
+                ResultDisplay rd = new ResultDisplay(rs, countrs.getInt(1), "Rooms Available", Arrays.asList("Room Number", "Type of Room", "Floor No", "Num of Beds"), Arrays.asList("ROOMNO", "TYPEOFROOM", "FLOORNO", "NUMOFBEDS"));
             }
             catch(SQLException vre1)
             {
                 JOptionPane.showMessageDialog(frame, vre1.getErrorCode() + " " + vre1.getMessage() + '\n', "Error ", JOptionPane.ERROR_MESSAGE);
                 System.out.println(vre1.getMessage());
-                System.out.println(vre1.getStackTrace());
+                System.out.println(Arrays.toString(vre1.getStackTrace()));
             }
         }
     }
@@ -181,7 +182,7 @@ public class HomeScreen {
             {
                 JOptionPane.showMessageDialog(frame, vre1.getErrorCode() + " " + vre1.getMessage() + '\n', "Fail", JOptionPane.ERROR_MESSAGE);
                 System.out.println(vre1.getMessage());
-                System.out.println(vre1.getStackTrace());
+                System.out.println(Arrays.toString(vre1.getStackTrace()));
             }
         }
     }
@@ -199,8 +200,13 @@ public class HomeScreen {
             {
                 JOptionPane.showMessageDialog(frame, vre1.getErrorCode() + " " + vre1.getMessage() + '\n', "Fail", JOptionPane.ERROR_MESSAGE);
                 System.out.println(vre1.getMessage());
-                System.out.println(vre1.getStackTrace());
+                System.out.println(Arrays.toString(vre1.getStackTrace()));
             }
         }
     }
+
+    /*private static class seeAllReservations implements ActionListener
+    {
+
+    }*/
 }

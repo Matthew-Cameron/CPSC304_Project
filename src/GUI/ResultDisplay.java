@@ -17,23 +17,18 @@ import java.util.List;
 
 public class ResultDisplay {
 
-    private static int WIDTH = 1000;
-    private static int HEIGHT = 650;
-    private static Database mainConnection;
-    private static Connection con;
+    private static int WIDTH = 500;
+    private static int HEIGHT = 25;
 
     private static JFrame frame;
     private static JPanel mainPanel;
     private static JPanel schedulePanel;
 
-    public ResultDisplay(ResultSet results, int rsSize, String title, List<String> friendlyNames, List<String> realNames){
-
-        mainConnection = Database.getInstance();
-        con = mainConnection.getConnection();
+    ResultDisplay(ResultSet results, int rsSize, String title, List<String> friendlyNames, List<String> realNames){
 
         frame = new JFrame(title);
-        frame.setSize(WIDTH,HEIGHT);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(WIDTH,100 +(HEIGHT * rsSize));
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setLayout(new FlowLayout());
 
         mainPanel = new JPanel();
@@ -49,10 +44,9 @@ public class ResultDisplay {
                 title,
                 TitledBorder.CENTER,
                 TitledBorder.TOP));
-        Object[][] rowData = new Object[7][friendlyNames.size()];
+        Object[][] rowData = new Object[rsSize][friendlyNames.size()];
 
-        Object coln[] = { "Room Number", "Floor Number", "Type", "Cost" } ;
-        JTable timetable = new JTable(rowData, coln);
+        JTable timetable = new JTable(rowData, friendlyNames.toArray());
         JScrollPane scrollPane = new JScrollPane(timetable);
         schedulePanel.add(scrollPane, BorderLayout.CENTER);
         overlaySchedulesPanel.add(schedulePanel);
