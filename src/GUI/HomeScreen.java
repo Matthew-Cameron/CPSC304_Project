@@ -140,5 +140,30 @@ public class HomeScreen {
                 "User Information",
                 TitledBorder.CENTER,
                 TitledBorder.TOP));
+
+        medicalHistoryPanel = new JPanel();
+        mainPanel.add(medicalHistoryPanel);
+        medicalHistoryPanel.setLayout(new GridLayout(2, 5, 8, 8));
+        medicalHistoryPanel.setBorder (BorderFactory.createTitledBorder (BorderFactory.createEtchedBorder (),
+                "Medical History",
+                TitledBorder.CENTER,
+                TitledBorder.TOP));
+
+        JPanel overlaySchedulesPanel = new JPanel();
+        mainPanel.add(overlaySchedulesPanel);
+        overlaySchedulesPanel.setLayout(new BoxLayout(overlaySchedulesPanel, BoxLayout.X_AXIS));
+
+        schedulePanel = new JPanel ();
+        schedulePanel.setBorder (BorderFactory.createTitledBorder (BorderFactory.createEtchedBorder (),
+                "Schedule",
+                TitledBorder.CENTER,
+                TitledBorder.TOP));
+        Object[][] rowData = new Object[7][3];
+
+        Object columnNames[] = { "Day", "Available From", "Available To" } ;
+        JTable timetable = new JTable(rowData, columnNames);
+        JScrollPane scrollPane = new JScrollPane(timetable);
+        schedulePanel.add(scrollPane, BorderLayout.CENTER);
+        overlaySchedulesPanel.add(schedulePanel);
     }
 }
