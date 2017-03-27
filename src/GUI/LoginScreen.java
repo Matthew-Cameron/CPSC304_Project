@@ -4,9 +4,6 @@ package GUI;
  * Created by Matthew on 2017-03-22.
  */
 import database.Database;
-import tables.Guest;
-import tables.Manager;
-import tables.User;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -49,13 +46,13 @@ public class LoginScreen {
 
         JButton loginButton = new JButton("Login");
         loginButton.setBounds(330, 200, 160, 30);
-        loginButton.addActionListener(new NewLoginListener());
+        loginButton.addActionListener(new GetIn());
         panel.add(loginButton);
 
         frame.setVisible(true);
     }
 
-    private static class NewLoginListener implements ActionListener {
+    private static class GetIn implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -63,11 +60,10 @@ public class LoginScreen {
             Connection con = loginConnection.getConnection();
             try
             { //we know, we know, storing plaintext passwords in the database is bad
-                int userid = 0;
                 ResultSet rs = con.createStatement().executeQuery("SELECT userid, name from users where username ='" + username.getText() + "' and password ='" + password.getText() + "'");
                 if(rs.next())
-                {
-                    userid = rs.getInt("userid");
+                { //there exists a user with such userid and password
+                    int userid = rs.getInt("userid");
                     System.out.println("Username " + username.getText() + " has id " + userid);
                     ResultSet checkMan = con.createStatement().executeQuery("SELECT * from manager where userid =" + userid);
                     //JOptionPane.showMessageDialog(frame, "Welcome " + rs.getString("name") + ", you have access level " + ((isAManglement) ? "Manager" : "Customer"), "Login successful", JOptionPane.PLAIN_MESSAGE);
@@ -75,8 +71,9 @@ public class LoginScreen {
                     frame.dispose();
                 }
                 else
-                {
+                { //give vague error
                     JOptionPane.showMessageDialog(frame, "Username or password is incorrect", "Login failed", JOptionPane.ERROR_MESSAGE);
+                    //JOptionPane.showMessageDialog(frame, "Wrong", "Error success", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
             catch (Exception saf)

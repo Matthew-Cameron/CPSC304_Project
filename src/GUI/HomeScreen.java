@@ -10,15 +10,21 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.GridLayout;
 import java.awt.FlowLayout;
-import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 public class HomeScreen {
 
     private static int WIDTH = 1000;
     private static int HEIGHT = 650;
     private static Database mainConnection;
+    private static Connection con;
 
     private static JFrame frame;
     private static JPanel mainPanel;
@@ -33,22 +39,17 @@ public class HomeScreen {
     // Constructs homescreen for a manager
     public HomeScreen(int userId, boolean isManager){
         mainConnection = Database.getInstance();
-        Connection con = mainConnection.getConnection();
+        con = mainConnection.getConnection();
         if(isManager)
         {
             try {
-                int uid = userId;
-                ResultSet rs = con.createStatement().executeQuery("SELECT * from Users where userid ='" + uid + "'");
-                int userid = 0;
-                String tempusername = "";
-                String tempname = "";
-                String tempphone = "";
-                if (rs.next()) {
-                    userid = rs.getInt("USERID");
-                    tempusername = rs.getString("USERNAME");
-                    tempname = rs.getString("NAME");
-                    tempphone = rs.getString("PHONENO");
-                }
+                ResultSet rs = con.createStatement().executeQuery("SELECT * from Users where userid ='" + userId + "'");
+                rs.next();
+                int userid = rs.getInt("USERID");
+                String tempusername = rs.getString("USERNAME");
+                String tempname = rs.getString("NAME");
+                String tempphone = rs.getString("PHONENO");
+
                 Manager managerUser = new Manager(tempname, tempphone, userid, tempusername, null, 0);
                 System.out.println("Manager: " + managerUser.getName());
 
@@ -66,6 +67,9 @@ public class HomeScreen {
                 informationPanel.add(wage);
                 JLabel userType = new JLabel("User Type: Manager");
                 informationPanel.add(userType);
+
+                JButton seeRes = new JButton("View All Reservations");
+                buttonPanel.add(seeRes);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
@@ -73,24 +77,15 @@ public class HomeScreen {
         else
         {
             try {
-                int uid = userId;
-                ResultSet rs = con.createStatement().executeQuery("SELECT * from Users u, Guest g where u.userid ='" + uid + "' and g.userid ='" + uid + "'");
-                int userid = 0;
-                String tempusername = "";
-                String tempname = "";
-                String tempphone = "";
-                String tempmembershipType = "";
-                String tempaddress = "";
-                int tempnightsStayedBefore = 0;
-                if (rs.next()) {
-                    userid = rs.getInt("USERID");
-                    tempusername = rs.getString("USERNAME");
-                    tempname = rs.getString("NAME");
-                    tempphone = rs.getString("PHONENO");
-                    tempmembershipType = rs.getString("MEMBERSHIPTYPE");
-                    tempaddress = rs.getString("HOMEADDRESS");
-                    tempnightsStayedBefore = rs.getInt("NIGHTS_STAYED_BEFORE");
-                }
+                ResultSet rs = con.createStatement().executeQuery("SELECT * from Users u, Guest g where u.userid ='" + userId + "' and g.userid ='" + userId + "'");
+                rs.next();
+                int userid = rs.getInt("USERID");
+                String tempusername = rs.getString("USERNAME");
+                String tempname = rs.getString("NAME");
+                String tempphone = rs.getString("PHONENO");
+                String tempmembershipType = rs.getString("MEMBERSHIPTYPE");
+                String tempaddress = rs.getString("HOMEADDRESS");
+                int tempnightsStayedBefore = rs.getInt("NIGHTS_STAYED_BEFORE");
                 Guest guestUser = new Guest(tempname, tempphone, userid, tempusername, null, tempmembershipType, tempaddress, tempnightsStayedBefore );
                 System.out.println("Guest: " + guestUser.getName());
                 generateStructure(guestUser);
@@ -111,6 +106,16 @@ public class HomeScreen {
                 informationPanel.add(nightsStayedBefore);
                 JLabel userType = new JLabel("User Type: Guest");
                 informationPanel.add(userType);
+
+                JButton makeRes = new JButton("Create a Reservation");
+                makeRes.addActionListener(new makeReservation());
+                buttonPanel.add(makeRes);
+                JButton viewRooms = new JButton("View Available Rooms");
+                viewRooms.addActionListener(new viewRooms());
+                buttonPanel.add(viewRooms);
+                JButton changeRes = new JButton("Change Reservation");
+                changeRes.addActionListener(new changeReservation());
+                buttonPanel.add(changeRes);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
@@ -129,10 +134,6 @@ public class HomeScreen {
         frame.add(mainPanel);
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
-        buttonPanel = new JPanel();
-        mainPanel.add(buttonPanel);
-        buttonPanel.setLayout(new FlowLayout());
-
         informationPanel = new JPanel();
         mainPanel.add(informationPanel);
         informationPanel.setLayout(new GridLayout(2, 5 , 8, 8));
@@ -141,29 +142,66 @@ public class HomeScreen {
                 TitledBorder.CENTER,
                 TitledBorder.TOP));
 
-        medicalHistoryPanel = new JPanel();
-        mainPanel.add(medicalHistoryPanel);
-        medicalHistoryPanel.setLayout(new GridLayout(2, 5, 8, 8));
-        medicalHistoryPanel.setBorder (BorderFactory.createTitledBorder (BorderFactory.createEtchedBorder (),
-                "Medical History",
-                TitledBorder.CENTER,
-                TitledBorder.TOP));
+        buttonPanel = new JPanel();
+        mainPanel.add(buttonPanel);
+        buttonPanel.setLayout(new FlowLayout());
+    }
 
-        JPanel overlaySchedulesPanel = new JPanel();
-        mainPanel.add(overlaySchedulesPanel);
-        overlaySchedulesPanel.setLayout(new BoxLayout(overlaySchedulesPanel, BoxLayout.X_AXIS));
+    private static class viewRooms implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try
+            {
+                ResultSet rs = con.createStatement().executeQuery("select r.roomno, r.typeofroom, r.floorno, r.numofbeds from reserve_room_has_floor2 r where r.guserid is null");
+                while(rs.next())
+                {
+                    System.out.println("Room number " + rs.getString("ROOMNO") + ", type of room " + rs.getString("TYPEOFROOM") + ", floor number " + rs.getInt("FLOORNO") + ", number of beds " + rs.getInt("NUMOFBEDS"));
+                }
+                ResultDisplay rd = new ResultDisplay(Arrays.asList("Room Number", "Type of Room", "Floor No", "Num of Beds"), rs);
+            }
+            catch(SQLException vre1)
+            {
+                JOptionPane.showMessageDialog(frame, vre1.getErrorCode() + " " + vre1.getMessage() + '\n', "Error ", JOptionPane.ERROR_MESSAGE);
+                System.out.println(vre1.getMessage());
+                System.out.println(vre1.getStackTrace());
+            }
+        }
+    }
 
-        schedulePanel = new JPanel ();
-        schedulePanel.setBorder (BorderFactory.createTitledBorder (BorderFactory.createEtchedBorder (),
-                "Schedule",
-                TitledBorder.CENTER,
-                TitledBorder.TOP));
-        Object[][] rowData = new Object[7][3];
+    private static class makeReservation implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try
+            {
+                ResultSet rs = con.createStatement().executeQuery("select * from res");
+            }
+            catch(SQLException vre1)
+            {
+                JOptionPane.showMessageDialog(frame, vre1.getErrorCode() + " " + vre1.getMessage() + '\n', "Fail", JOptionPane.ERROR_MESSAGE);
+                System.out.println(vre1.getMessage());
+                System.out.println(vre1.getStackTrace());
+            }
+        }
+    }
 
-        Object columnNames[] = { "Day", "Available From", "Available To" } ;
-        JTable timetable = new JTable(rowData, columnNames);
-        JScrollPane scrollPane = new JScrollPane(timetable);
-        schedulePanel.add(scrollPane, BorderLayout.CENTER);
-        overlaySchedulesPanel.add(schedulePanel);
+    private static class changeReservation implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try
+            {
+                ResultSet rs = con.createStatement().executeQuery("select * from user_tables");
+                ResultDisplay avs = new ResultDisplay(null, null);
+
+            }
+            catch(SQLException vre1)
+            {
+                JOptionPane.showMessageDialog(frame, vre1.getErrorCode() + " " + vre1.getMessage() + '\n', "Fail", JOptionPane.ERROR_MESSAGE);
+                System.out.println(vre1.getMessage());
+                System.out.println(vre1.getStackTrace());
+            }
+        }
     }
 }
