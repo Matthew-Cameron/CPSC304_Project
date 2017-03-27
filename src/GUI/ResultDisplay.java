@@ -13,6 +13,8 @@ import java.awt.FlowLayout;
 import java.awt.BorderLayout;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.Types;
 import java.util.List;
 
 public class ResultDisplay {
@@ -28,7 +30,7 @@ public class ResultDisplay {
 
         frame = new JFrame(title);
         frame.setSize(WIDTH,100 +(HEIGHT * rsSize));
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setLayout(new FlowLayout());
 
         mainPanel = new JPanel();
@@ -46,7 +48,21 @@ public class ResultDisplay {
                 TitledBorder.TOP));
         Object[][] rowData = new Object[rsSize][friendlyNames.size()];
 
+        try{
+            int i = 0;
+            while(results.next()){
+                int j;
+                for(j = 0; j < friendlyNames.size(); j++){
+                    rowData[i][j] = results.getString(realNames.get(j));
+                }
+                i++;
+            }
+        }catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
         JTable timetable = new JTable(rowData, friendlyNames.toArray());
+
         JScrollPane scrollPane = new JScrollPane(timetable);
         schedulePanel.add(scrollPane, BorderLayout.CENTER);
         overlaySchedulesPanel.add(schedulePanel);
