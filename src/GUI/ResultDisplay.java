@@ -19,14 +19,19 @@ public class ResultDisplay {
 
     private static int WIDTH = 1000;
     private static int HEIGHT = 650;
+    private static Database mainConnection;
+    private static Connection con;
 
     private static JFrame frame;
     private static JPanel mainPanel;
     private static JPanel schedulePanel;
 
-    public ResultDisplay(ResultSet results, String title, List<String> friendlyNames, List<String> realNames){
+    public ResultDisplay(ResultSet results, int rsSize, String title, List<String> friendlyNames, List<String> realNames){
 
-        frame = new JFrame("Available Rooms");
+        mainConnection = Database.getInstance();
+        con = mainConnection.getConnection();
+
+        frame = new JFrame(title);
         frame.setSize(WIDTH,HEIGHT);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new FlowLayout());
@@ -41,12 +46,12 @@ public class ResultDisplay {
 
         schedulePanel = new JPanel ();
         schedulePanel.setBorder (BorderFactory.createTitledBorder (BorderFactory.createEtchedBorder (),
-                "Schedule",
+                title,
                 TitledBorder.CENTER,
                 TitledBorder.TOP));
-        Object[][] rowData = new Object[7][3];
+        Object[][] rowData = new Object[7][friendlyNames.size()];
 
-        Object coln[] = { "Room Number", "Type", "Floor Number", "Number of Beds" } ;
+        Object coln[] = { "Room Number", "Floor Number", "Type", "Cost" } ;
         JTable timetable = new JTable(rowData, coln);
         JScrollPane scrollPane = new JScrollPane(timetable);
         schedulePanel.add(scrollPane, BorderLayout.CENTER);
