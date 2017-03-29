@@ -69,11 +69,14 @@ public class HomeScreen {
                 JButton seeRes = new JButton("View All Reservations");
                 seeRes.addActionListener(new seeAllReservations());
                 buttonPanel.add(seeRes);
+                JButton seeUnpaidBills = new JButton("Unpaid Bills");
+                seeUnpaidBills.addActionListener(new viewUnpaidBills());
+                buttonPanel.add(seeUnpaidBills);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
         }
-        else
+        else //Constructs homescreen for Guest
         {
             try {
                 ResultSet rs = con.createStatement().executeQuery("SELECT * from Users u, Guest g where u.userid ='" + userId + "' and g.userid ='" + userId + "'");
@@ -147,6 +150,27 @@ public class HomeScreen {
     }
 
     //Button actions from here on
+
+    // #1 Selection and projection query
+    private static class viewUnpaidBills implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try
+            {
+                ResultSet rs = con.createStatement().executeQuery("select GUSERID, AMOUNTPAID, AMOUNTDUE from BILL_HAS_GENERATE_BILL where AMOUNTPAID < AMOUNTDUE");
+                ResultSet countrs = con.createStatement().executeQuery("select count(*) from BILL_HAS_GENERATE_BILL where AMOUNTPAID < AMOUNTDUE");
+                countrs.next();
+                ResultDisplay rd = new ResultDisplay(rs, countrs.getInt(1), "Unpaid Bills", Arrays.asList("Guest ID", "Amount Paid", "Amount Due"), Arrays.asList("GUSERID", "AMOUNTPAID", "AMOUNTDUE"));
+            }
+            catch(SQLException vre1)
+            {
+                JOptionPane.showMessageDialog(frame, vre1.getErrorCode() + " " + vre1.getMessage() + '\n', "Error ", JOptionPane.ERROR_MESSAGE);
+                System.out.println(vre1.getMessage());
+                System.out.println(Arrays.toString(vre1.getStackTrace()));
+            }
+        }
+    }
 
     private static class viewRooms implements ActionListener
     {
