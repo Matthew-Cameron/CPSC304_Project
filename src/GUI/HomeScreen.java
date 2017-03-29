@@ -67,7 +67,7 @@ public class HomeScreen {
                 informationPanel.add(userType);
 
                 JButton seeRes = new JButton("View All Reservations");
-                seeRes.addActionListener(null);
+                seeRes.addActionListener(new seeAllReservations());
                 buttonPanel.add(seeRes);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
@@ -175,7 +175,7 @@ public class HomeScreen {
         public void actionPerformed(ActionEvent e) {
             try
             {
-                ResultSet rs = con.createStatement().executeQuery("select * from res");
+                ResultSet rs = con.createStatement().executeQuery("select * from guest");
             }
             catch(SQLException vre1)
             {
@@ -204,8 +204,25 @@ public class HomeScreen {
         }
     }
 
-    /*private static class seeAllReservations implements ActionListener
+    private static class seeAllReservations implements ActionListener
     {
 
-    }*/
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try
+            {
+                ResultSet rs = con.createStatement().executeQuery("select * from RESERVE_ROOM_HAS_FLOOR2");
+                ResultSet countrs = con.createStatement().executeQuery("select count(*) from RESERVE_ROOM_HAS_FLOOR2");
+                countrs.next();
+
+                ResultDisplay rd = new ResultDisplay(rs, countrs.getInt("COUNT(*)"), "Reservations", Arrays.asList("Room No", "Type of Room", "Floor No", "Guest ID", "Booking No", "From Date", "To Date", "Number of Beds"), Arrays.asList("ROOMNO", "TYPEOFROOM", "FLOORNO", "GUSERID", "BOOKINGNO", "FROMDATE", "TODATE", "NUMOFBEDS"));
+            }
+            catch(SQLException vre1)
+            {
+                JOptionPane.showMessageDialog(frame, vre1.getErrorCode() + " " + vre1.getMessage() + '\n', "Fail", JOptionPane.ERROR_MESSAGE);
+                System.out.println(vre1.getMessage());
+                System.out.println(Arrays.toString(vre1.getStackTrace()));
+            }
+        }
+    }
 }
