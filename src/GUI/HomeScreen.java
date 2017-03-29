@@ -23,7 +23,6 @@ public class HomeScreen {
 
     private static int WIDTH = 1000;
     private static int HEIGHT = 650;
-    private static Database mainConnection;
     private static Connection con;
 
     private static JFrame frame;
@@ -38,8 +37,7 @@ public class HomeScreen {
 
     // Constructs homescreen for a manager
     public HomeScreen(int userId, boolean isManager){
-        mainConnection = Database.getInstance();
-        con = mainConnection.getConnection();
+        con = Database.getInstance().getConnection();
         if(isManager)
         {
             try {
@@ -156,10 +154,11 @@ public class HomeScreen {
         public void actionPerformed(ActionEvent e) {
             try
             {
-                ResultSet rs = con.createStatement().executeQuery("select r.roomno, r.typeofroom, r.floorno, r.numofbeds from reserve_room_has_floor2 r where r.guserid is null");
+                ResultSet rs = con.createStatement().executeQuery("select r2.roomno, r2.typeofroom, r2.floorno, r2.numofbeds, r1.cost from reserve_room_has_floor2 r2, reserve_room_has_floor1 r1 where r2.guserid is null and r1.typeofroom = r2.typeofroom");
                 ResultSet countrs = con.createStatement().executeQuery("select count(*) from reserve_room_has_floor2 where guserid is null");
                 countrs.next();
-                ResultDisplay rd = new ResultDisplay(rs, countrs.getInt(1), "Rooms Available", Arrays.asList("Room Number", "Type of Room", "Floor No", "Num of Beds"), Arrays.asList("ROOMNO", "TYPEOFROOM", "FLOORNO", "NUMOFBEDS"));
+
+                ResultDisplay rd = new ResultDisplay(rs, countrs.getInt(1), "Rooms Available", Arrays.asList("Room Number", "Type of Room", "Floor No", "Num of Beds", "Price"), Arrays.asList("ROOMNO", "TYPEOFROOM", "FLOORNO", "NUMOFBEDS", "COST"));
             }
             catch(SQLException vre1)
             {
