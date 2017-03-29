@@ -72,6 +72,9 @@ public class HomeScreen {
                 JButton seeUnpaidBills = new JButton("Unpaid Bills");
                 seeUnpaidBills.addActionListener(new viewUnpaidBills());
                 buttonPanel.add(seeUnpaidBills);
+                JButton lowestPaidHouseKeeper = new JButton("Lowest Paid HouseKeeper");
+                lowestPaidHouseKeeper.addActionListener(new viewLowestPaidHouseKeeper());
+                buttonPanel.add(lowestPaidHouseKeeper);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
@@ -162,6 +165,27 @@ public class HomeScreen {
                 ResultSet countrs = con.createStatement().executeQuery("select count(*) from BILL_HAS_GENERATE_BILL where AMOUNTPAID < AMOUNTDUE");
                 countrs.next();
                 ResultDisplay rd = new ResultDisplay(rs, countrs.getInt(1), "Unpaid Bills", Arrays.asList("Guest ID", "Amount Paid", "Amount Due"), Arrays.asList("GUSERID", "AMOUNTPAID", "AMOUNTDUE"));
+            }
+            catch(SQLException vre1)
+            {
+                JOptionPane.showMessageDialog(frame, vre1.getErrorCode() + " " + vre1.getMessage() + '\n', "Error ", JOptionPane.ERROR_MESSAGE);
+                System.out.println(vre1.getMessage());
+                System.out.println(Arrays.toString(vre1.getStackTrace()));
+            }
+        }
+    }
+
+    // #4 Aggregation query
+    private static class viewLowestPaidHouseKeeper implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try
+            {
+                ResultSet rs = con.createStatement().executeQuery("select * from Housekeeper2 where wage = (select min(wage) from HOUSEKEEPER2)");
+                ResultSet countrs = con.createStatement().executeQuery("select count(*) from Housekeeper2 where wage = (select min(wage) from HOUSEKEEPER2)");
+                countrs.next();
+                ResultDisplay rd = new ResultDisplay(rs, countrs.getInt(1), "Lowest Paid HouseKeeper", Arrays.asList("Wage", "Job", "Phone", "Name", "SIN"), Arrays.asList("WAGE", "CLEANINGSPECIALITY", "PHONENO", "NAME", "SIN"));
             }
             catch(SQLException vre1)
             {
