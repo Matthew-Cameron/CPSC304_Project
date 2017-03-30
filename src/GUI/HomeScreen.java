@@ -26,6 +26,9 @@ public class HomeScreen {
     static String[] choices = { "BILLID","MUSERID", "AMOUNT", "BILLID,MUSERID", "BILLID,AMOUNT", "MUSERID,AMOUNT", "BILLID,MUSERID,AMOUNT"};
     static String project;
     static final JComboBox<String> cb = new JComboBox<String>(choices);
+    static String sym = "";
+    static String[] choices1 = { "AMOUNT =","AMOUNT >", "AMOUNT <" };
+    static final JComboBox<String> cb1 = new JComboBox<String>(choices1);
 
     private static int WIDTH = 1000;
     private static int HEIGHT = 650;
@@ -153,6 +156,7 @@ public class HomeScreen {
                 selectionPanel.add(lbl);
                 cb.setVisible(true);
                 selectionPanel.add(cb);
+                selectionPanel.add(cb1);
                 projText = new JTextField(7);
                 projText.setBounds(100, 40, 100, 25);
                 selectionPanel.add(projText);
@@ -272,13 +276,14 @@ public class HomeScreen {
         @Override
         public void actionPerformed(ActionEvent e) {
             col = cb.getSelectedItem().toString();
+            sym = cb1.getSelectedItem().toString();
             String givenAmount = projText.getText();
             try {
                 int num = Integer.parseInt(givenAmount);
                 try {
-                    ResultSet rs = con.createStatement().executeQuery("select " + col + " from DISCOUNTS where amount <=" + givenAmount);
+                    ResultSet rs = con.createStatement().executeQuery("select " + col + " from DISCOUNTS where " + sym + " " + givenAmount);
 
-                    ResultSet countrs = con.createStatement().executeQuery("select count(*) from DISCOUNTS where amount <=" + givenAmount);
+                    ResultSet countrs = con.createStatement().executeQuery("select count(*) from DISCOUNTS where " + sym + " " + givenAmount);
                     countrs.next();
                     ResultDisplay rd = new ResultDisplay(rs, countrs.getInt(1), "DISCOUNTS " + col, Arrays.asList(col.split(",")), Arrays.asList(col.split(",")));
                 } catch (SQLException vre1) {
