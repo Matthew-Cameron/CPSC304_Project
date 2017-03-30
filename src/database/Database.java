@@ -54,7 +54,7 @@ public class Database {
         return 0;
     }
 
-    //division query
+    //deletion query
     public boolean deleteHousekeeper(int sin) throws SQLException {
         int result = connection.createStatement().executeUpdate("delete from housekeeper2 where sin = " + sin);
         return result == 1;
@@ -64,7 +64,6 @@ public class Database {
     public boolean deleteRoomNo(int roomNo) throws SQLException {
         int result = connection.createStatement().executeUpdate("delete from reserve_room_has_floor2 where roomNo = " + roomNo);
         return result == 1;
-
     }
 }
 

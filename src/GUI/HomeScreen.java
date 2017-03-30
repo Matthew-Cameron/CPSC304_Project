@@ -33,11 +33,7 @@ public class HomeScreen {
     private static JPanel membershipBillPanel;
     private static JPanel informationPanel;
     private static JTextField sinText;
-    private static JLabel sinLabel;
-    private static JButton submitHButton;
     private static JTextField roomText;
-    private static JLabel roomNoLabel;
-    private static JButton submitRButton;
 
 
     // Constructs homescreen for a manager
@@ -78,13 +74,13 @@ public class HomeScreen {
                 findHousekeepersAssignedToAllRoom.addActionListener(new findHousekeepersAssignedToAllRoom());
                 buttonPanel.add(findHousekeepersAssignedToAllRoom);
 
-                sinLabel = new JLabel("Delete SIN");
+                JLabel sinLabel = new JLabel("Delete SIN");
                 sinLabel.setBounds(200, 100, 80, 25);
                 informationPanel.add(sinLabel);
-                sinText = new JTextField(7);
+                JTextField sinText = new JTextField(7);
                 sinText.setBounds(100, 40, 50, 25);
                 informationPanel.add(sinText);
-                submitHButton = new JButton();
+                JButton submitHButton = new JButton();
                 submitHButton.setText("Submit");
                 submitHButton.addActionListener(new viewDeleteHousekeeper());
                 informationPanel.add(submitHButton);
@@ -92,13 +88,13 @@ public class HomeScreen {
                 viewSer.addActionListener(new viewServicesAssigns());
                 buttonPanel.add(viewSer);
 
-                roomNoLabel = new JLabel("Delete room");
+                JLabel roomNoLabel = new JLabel("Delete room");
                 roomNoLabel.setBounds(200, 100, 80, 25);
                 informationPanel.add(roomNoLabel);
-                roomText = new JTextField(7);
+                JTextField roomText = new JTextField(7);
                 roomText.setBounds(100, 40, 50, 25);
                 informationPanel.add(roomText);
-                submitRButton = new JButton();
+                JButton submitRButton = new JButton();
                 submitRButton.setText("Submit");
                 submitRButton.addActionListener(new viewDeleteRoom());
                 informationPanel.add(submitRButton);
@@ -408,6 +404,9 @@ public class HomeScreen {
                 ResultSet countrs = con.createStatement().executeQuery("SELECT  COUNT(*) FROM housekeeper2 h WHERE  NOT EXISTS  (SELECT  * FROM  floor F WHERE  NOT EXISTS  (SELECT  * FROM  services_Assigns S WHERE s.sin = h.sin and s.floorNo = f.floorNo))");
                 countrs.next();
 
+                ResultDisplay rd = new ResultDisplay(rs, countrs.getInt(1), "List of Housekeepers", Arrays.asList("Wage", "Cleaning Speciality", "PhoneNo", "Name", "SIN"), Arrays.asList("WAGE", "CLEANINGSPECIALITY", "PHONENO", "NAME", "SIN"));
+
+
 
             } catch (SQLException vre1) {
                 JOptionPane.showMessageDialog(frame, vre1.getErrorCode() + " " + vre1.getMessage() + '\n', "Error ", JOptionPane.ERROR_MESSAGE);
@@ -499,6 +498,8 @@ public class HomeScreen {
         }
     }
 
+
+
     private static class makeReservation implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -511,6 +512,8 @@ public class HomeScreen {
             }
         }
     }
+
+
 
     private static class viewServicesAssigns implements ActionListener {
         @Override
@@ -548,6 +551,7 @@ public class HomeScreen {
 
 
 
+
     private static class seeAllReservations implements ActionListener
     {
 
@@ -569,4 +573,9 @@ public class HomeScreen {
             }
         }
     }
+
+
+
+
+
 }
