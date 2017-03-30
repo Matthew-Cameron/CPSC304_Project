@@ -28,6 +28,8 @@ public class HomeScreen {
     private static JFrame frame;
     private static JPanel mainPanel;
     private static JPanel buttonPanel;
+    private static JPanel billPanel;
+    private static JPanel membershipBillPanel;
     private static JPanel informationPanel;
     private static JPanel medicalHistoryPanel;
     private static JPanel schedulePanel;
@@ -71,7 +73,31 @@ public class HomeScreen {
                 buttonPanel.add(seeRes);
                 JButton seeUnpaidBills = new JButton("Unpaid Bills");
                 seeUnpaidBills.addActionListener(new viewUnpaidBills());
-                buttonPanel.add(seeUnpaidBills);
+                billPanel.add(seeUnpaidBills);
+                JButton discountedBills = new JButton("Discounted Bills");
+                discountedBills.addActionListener(new viewDiscountedBills());
+                billPanel.add(discountedBills);
+                JButton billLarge = new JButton("Largest Bill");
+                billLarge.addActionListener(new viewLargeBill());
+                billPanel.add(billLarge);
+                JButton billSmall = new JButton("Smallest Bill");
+                billSmall.addActionListener(new viewSmallBill());
+                billPanel.add(billSmall);
+                JButton billavg = new JButton("Average Bill");
+                billavg.addActionListener(new viewAvgBill());
+                billPanel.add(billavg);
+                JButton billTotal = new JButton("Total Bill");
+                billTotal.addActionListener(new viewTotalBill());
+                billPanel.add(billTotal);
+                JButton billNum = new JButton("Number of Bills");
+                billNum.addActionListener(new viewNumBill());
+                billPanel.add(billNum);
+                JButton maxAvgMembership = new JButton("Membership with the maximum average amount paid per bill");
+                maxAvgMembership.addActionListener(new viewMaxAvgMembership());
+                membershipBillPanel.add(maxAvgMembership);
+                JButton minAvgMembership = new JButton("Membership with the minimum average amount paid per bill");
+                minAvgMembership.addActionListener(new viewMinAvgMembership());
+                membershipBillPanel.add(minAvgMembership);
                 JButton lowestPaidHouseKeeper = new JButton("Lowest Paid HouseKeeper");
                 lowestPaidHouseKeeper.addActionListener(new viewLowestPaidHouseKeeper());
                 buttonPanel.add(lowestPaidHouseKeeper);
@@ -150,6 +176,14 @@ public class HomeScreen {
         buttonPanel = new JPanel();
         mainPanel.add(buttonPanel);
         buttonPanel.setLayout(new FlowLayout());
+
+        billPanel = new JPanel();
+        mainPanel.add(billPanel);
+        billPanel.setLayout(new FlowLayout());
+
+        membershipBillPanel = new JPanel();
+        mainPanel.add(membershipBillPanel);
+        membershipBillPanel.setLayout(new FlowLayout());
     }
 
     //Button actions from here on
@@ -165,6 +199,166 @@ public class HomeScreen {
                 ResultSet countrs = con.createStatement().executeQuery("select count(*) from BILL_HAS_GENERATE_BILL where AMOUNTPAID < AMOUNTDUE");
                 countrs.next();
                 ResultDisplay rd = new ResultDisplay(rs, countrs.getInt(1), "Unpaid Bills", Arrays.asList("Guest ID", "Amount Paid", "Amount Due"), Arrays.asList("GUSERID", "AMOUNTPAID", "AMOUNTDUE"));
+            }
+            catch(SQLException vre1)
+            {
+                JOptionPane.showMessageDialog(frame, vre1.getErrorCode() + " " + vre1.getMessage() + '\n', "Error ", JOptionPane.ERROR_MESSAGE);
+                System.out.println(vre1.getMessage());
+                System.out.println(Arrays.toString(vre1.getStackTrace()));
+            }
+        }
+    }
+
+    private static class viewMaxAvgMembership implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try
+            {
+                ResultSet rs = con.createStatement().executeQuery("select * from (select g.membershiptype, round(avg(b.amountdue),0) from guest g, BILL_HAS_GENERATE_BILL b where g.USERID = b.GUSERID group by membershiptype order by round(avg(b.amountdue),0) desc) where rownum = 1");
+                ResultSet countrs = con.createStatement().executeQuery("select count(*) from (select avg(amountdue) from BILL_HAS_GENERATE_BILL)");
+                countrs.next();
+                ResultDisplay rd = new ResultDisplay(rs, countrs.getInt(1), "Membership with the maximum average amount paid per bill", Arrays.asList("Membership", "Average Bill Amount"), Arrays.asList("MEMBERSHIPTYPE", "ROUND(AVG(B.AMOUNTDUE),0)"));
+            }
+            catch(SQLException vre1)
+            {
+                JOptionPane.showMessageDialog(frame, vre1.getErrorCode() + " " + vre1.getMessage() + '\n', "Error ", JOptionPane.ERROR_MESSAGE);
+                System.out.println(vre1.getMessage());
+                System.out.println(Arrays.toString(vre1.getStackTrace()));
+            }
+        }
+    }
+
+    private static class viewMinAvgMembership implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try
+            {
+                ResultSet rs = con.createStatement().executeQuery("select * from (select g.membershiptype, round(avg(b.amountdue),0) from guest g, BILL_HAS_GENERATE_BILL b where g.USERID = b.GUSERID group by membershiptype order by round(avg(b.amountdue),0) asc) where rownum = 1");
+                ResultSet countrs = con.createStatement().executeQuery("select count(*) from (select avg(amountdue) from BILL_HAS_GENERATE_BILL)");
+                countrs.next();
+                ResultDisplay rd = new ResultDisplay(rs, countrs.getInt(1), "Membership with the minimum average amount paid per bill", Arrays.asList("Membership", "Average Bill Amount"), Arrays.asList("MEMBERSHIPTYPE", "ROUND(AVG(B.AMOUNTDUE),0)"));
+            }
+            catch(SQLException vre1)
+            {
+                JOptionPane.showMessageDialog(frame, vre1.getErrorCode() + " " + vre1.getMessage() + '\n', "Error ", JOptionPane.ERROR_MESSAGE);
+                System.out.println(vre1.getMessage());
+                System.out.println(Arrays.toString(vre1.getStackTrace()));
+            }
+        }
+    }
+
+    private static class viewDiscountedBills implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try
+            {
+                ResultSet rs = con.createStatement().executeQuery("select b.BILLID, b.GUSERID, b.amountdue, d.AMOUNT from bill_has_generate_bill b inner join DISCOUNTS d on b.BILLID = d.BILLID");
+                ResultSet countrs = con.createStatement().executeQuery("select count(*) from bill_has_generate_bill b inner join DISCOUNTS d on b.BILLID = d.BILLID");
+                countrs.next();
+                ResultDisplay rd = new ResultDisplay(rs, countrs.getInt(1), "Discounted Bills", Arrays.asList("Bill ID", "Guest ID", "Amount Due", "Discount"), Arrays.asList("BILLID", "GUSERID", "AMOUNTDUE", "AMOUNT"));
+            }
+            catch(SQLException vre1)
+            {
+                JOptionPane.showMessageDialog(frame, vre1.getErrorCode() + " " + vre1.getMessage() + '\n', "Error ", JOptionPane.ERROR_MESSAGE);
+                System.out.println(vre1.getMessage());
+                System.out.println(Arrays.toString(vre1.getStackTrace()));
+            }
+        }
+    }
+
+    private static class viewLargeBill implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try
+            {
+                ResultSet rs = con.createStatement().executeQuery("select b1.billid, b1.guserid, b1.amountdue from BILL_HAS_GENERATE_BILL b1 where b1.amountdue = (select max(b2.amountdue) from BILL_HAS_GENERATE_BILL b2)");
+                ResultSet countrs = con.createStatement().executeQuery("select count(*) from (select max(amountdue) from BILL_HAS_GENERATE_BILL)");
+                countrs.next();
+                ResultDisplay rd = new ResultDisplay(rs, countrs.getInt(1), "Largest Bill", Arrays.asList("Bill ID", "Guest ID", "Amount Due"), Arrays.asList("BILLID", "GUSERID", "AMOUNTDUE"));
+            }
+            catch(SQLException vre1)
+            {
+                JOptionPane.showMessageDialog(frame, vre1.getErrorCode() + " " + vre1.getMessage() + '\n', "Error ", JOptionPane.ERROR_MESSAGE);
+                System.out.println(vre1.getMessage());
+                System.out.println(Arrays.toString(vre1.getStackTrace()));
+            }
+        }
+    }
+
+    private static class viewSmallBill implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try
+            {
+                ResultSet rs = con.createStatement().executeQuery("select b1.billid, b1.guserid, b1.amountdue from BILL_HAS_GENERATE_BILL b1 where b1.amountdue = (select min(b2.amountdue) from BILL_HAS_GENERATE_BILL b2)");
+                ResultSet countrs = con.createStatement().executeQuery("select count(*) from (select min(amountdue) from BILL_HAS_GENERATE_BILL)");
+                countrs.next();
+                ResultDisplay rd = new ResultDisplay(rs, countrs.getInt(1), "Smallest Bill", Arrays.asList("Bill ID", "Guest ID", "Amount Due"), Arrays.asList("BILLID", "GUSERID", "AMOUNTDUE"));
+            }
+            catch(SQLException vre1)
+            {
+                JOptionPane.showMessageDialog(frame, vre1.getErrorCode() + " " + vre1.getMessage() + '\n', "Error ", JOptionPane.ERROR_MESSAGE);
+                System.out.println(vre1.getMessage());
+                System.out.println(Arrays.toString(vre1.getStackTrace()));
+            }
+        }
+    }
+
+    private static class viewAvgBill implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try
+            {
+                ResultSet rs = con.createStatement().executeQuery("select round(avg(amountdue),0) from BILL_HAS_GENERATE_BILL");
+                ResultSet countrs = con.createStatement().executeQuery("select count(*) from (select avg(amountdue) from BILL_HAS_GENERATE_BILL)");
+                countrs.next();
+                ResultDisplay rd = new ResultDisplay(rs, countrs.getInt(1), "Average Bill", Arrays.asList("Average Amount Due"), Arrays.asList("ROUND(AVG(AMOUNTDUE),0)"));
+            }
+            catch(SQLException vre1)
+            {
+                JOptionPane.showMessageDialog(frame, vre1.getErrorCode() + " " + vre1.getMessage() + '\n', "Error ", JOptionPane.ERROR_MESSAGE);
+                System.out.println(vre1.getMessage());
+                System.out.println(Arrays.toString(vre1.getStackTrace()));
+            }
+        }
+    }
+
+    private static class viewTotalBill implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try
+            {
+                ResultSet rs = con.createStatement().executeQuery("select sum(amountdue) from BILL_HAS_GENERATE_BILL");
+                ResultSet countrs = con.createStatement().executeQuery("select count(*) from (select count(amountdue) from BILL_HAS_GENERATE_BILL)");
+                countrs.next();
+                ResultDisplay rd = new ResultDisplay(rs, countrs.getInt(1), "Total Bill Amount", Arrays.asList("Total Bill Amount"), Arrays.asList("SUM(AMOUNTDUE)"));
+            }
+            catch(SQLException vre1)
+            {
+                JOptionPane.showMessageDialog(frame, vre1.getErrorCode() + " " + vre1.getMessage() + '\n', "Error ", JOptionPane.ERROR_MESSAGE);
+                System.out.println(vre1.getMessage());
+                System.out.println(Arrays.toString(vre1.getStackTrace()));
+            }
+        }
+    }
+
+    private static class viewNumBill implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try
+            {
+                ResultSet rs = con.createStatement().executeQuery("select count(*) from BILL_HAS_GENERATE_BILL");
+                ResultSet countrs = con.createStatement().executeQuery("select count(*) from (select count(*) from BILL_HAS_GENERATE_BILL)");
+                countrs.next();
+                ResultDisplay rd = new ResultDisplay(rs, countrs.getInt(1), "Number of Bills", Arrays.asList("Number of Bills"), Arrays.asList("COUNT(*)"));
             }
             catch(SQLException vre1)
             {
