@@ -65,6 +65,11 @@ public class Database {
         int result = connection.createStatement().executeUpdate("delete from reserve_room_has_floor2 where roomNo = " + roomNo);
         return result == 1;
     }
+
+    public boolean hireHousekeeper(int sin) throws SQLException {
+        int result = connection.createStatement().executeUpdate("insert  into housekeeper2 values(NULL, NULL, NULL, NULL," + sin + ")");
+        return result == 1;
+    }
 }
 
 
