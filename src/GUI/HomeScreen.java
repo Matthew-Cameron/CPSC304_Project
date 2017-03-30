@@ -25,6 +25,9 @@ public class HomeScreen {
     static String col = "";
     static String[] choices = { "BILLID","MUSERID", "AMOUNT", "BILLID,MUSERID", "BILLID,AMOUNT", "MUSERID,AMOUNT", "BILLID,MUSERID,AMOUNT"};
     static final JComboBox<String> cb = new JComboBox<String>(choices);
+    static String sym = "";
+    static String[] choices1 = { "AMOUNT =","AMOUNT >", "AMOUNT <" };
+    static final JComboBox<String> cb1 = new JComboBox<String>(choices1);
 
     private static int WIDTH = 1000;
     private static int HEIGHT = 650;
@@ -140,6 +143,7 @@ public class HomeScreen {
                 selectionPanel.add(lbl);
                 cb.setVisible(true);
                 selectionPanel.add(cb);
+                selectionPanel.add(cb1);
                 JButton btn = new JButton("OK");
                 btn.addActionListener(new viewSelectionQuery());
                 selectionPanel.add(btn);
@@ -256,8 +260,9 @@ public class HomeScreen {
         @Override
         public void actionPerformed(ActionEvent e) {
             col = cb.getSelectedItem().toString();
+            sym = cb1.getSelectedItem().toString();
             try {
-                ResultSet rs = con.createStatement().executeQuery("select " + col + " from DISCOUNTS");
+                ResultSet rs = con.createStatement().executeQuery("select " + col + " from DISCOUNTS where sym");
                 ResultSet countrs = con.createStatement().executeQuery("select count(*) from DISCOUNTS");
                 countrs.next();
                 ResultDisplay rd = new ResultDisplay(rs, countrs.getInt(1), "DISCOUNTS " + col, Arrays.asList(col.split(",")), Arrays.asList(col.split(",")));
