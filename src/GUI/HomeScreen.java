@@ -22,6 +22,10 @@ import java.util.List;
 
 public class HomeScreen {
 
+    static String col = "";
+    static String[] choices = { "BILLID","MUSERID", "AMOUNT", "BILLID,MUSERID", "BILLID,AMOUNT", "MUSERID,AMOUNT", "BILLID,MUSERID,AMOUNT"};
+    static final JComboBox<String> cb = new JComboBox<String>(choices);
+
     private static int WIDTH = 1000;
     private static int HEIGHT = 650;
     private static Connection con;
@@ -31,6 +35,7 @@ public class HomeScreen {
     private static JPanel buttonPanel;
     private static JPanel billPanel;
     private static JPanel membershipBillPanel;
+    private static JPanel selectionPanel;
     private static JPanel informationPanel;
     private static JTextField sinText;
     private static JTextField roomText;
@@ -129,6 +134,16 @@ public class HomeScreen {
                 JButton lowestPaidHouseKeeper = new JButton("Lowest Paid HouseKeeper");
                 lowestPaidHouseKeeper.addActionListener(new viewLowestPaidHouseKeeper());
                 buttonPanel.add(lowestPaidHouseKeeper);
+
+                JLabel lbl = new JLabel("Select from DISCOUNTS");
+                lbl.setVisible(true);
+                selectionPanel.add(lbl);
+                cb.setVisible(true);
+                selectionPanel.add(cb);
+                JButton btn = new JButton("OK");
+                btn.addActionListener(new viewSelectionQuery());
+                selectionPanel.add(btn);
+
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
@@ -211,6 +226,9 @@ public class HomeScreen {
         membershipBillPanel = new JPanel();
         mainPanel.add(membershipBillPanel);
         membershipBillPanel.setLayout(new FlowLayout());
+
+        selectionPanel = new JPanel();
+        mainPanel.add(selectionPanel);
     }
 
     //Button actions from here on
@@ -224,6 +242,25 @@ public class HomeScreen {
                 ResultSet countrs = con.createStatement().executeQuery("select count(*) from BILL_HAS_GENERATE_BILL where AMOUNTPAID < AMOUNTDUE");
                 countrs.next();
                 ResultDisplay rd = new ResultDisplay(rs, countrs.getInt(1), "Unpaid Bills", Arrays.asList("Guest ID", "Amount Paid", "Amount Due"), Arrays.asList("GUSERID", "AMOUNTPAID", "AMOUNTDUE"));
+            } catch (SQLException vre1) {
+                JOptionPane.showMessageDialog(frame, vre1.getErrorCode() + " " + vre1.getMessage() + '\n', "Error ", JOptionPane.ERROR_MESSAGE);
+                System.out.println(vre1.getMessage());
+                System.out.println(Arrays.toString(vre1.getStackTrace()));
+            }
+        }
+    }
+
+    // #1 Selection query
+    private static class viewSelectionQuery implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            col = cb.getSelectedItem().toString();
+            try {
+                ResultSet rs = con.createStatement().executeQuery("select " + col + " from DISCOUNTS");
+                ResultSet countrs = con.createStatement().executeQuery("select count(*) from DISCOUNTS");
+                countrs.next();
+                ResultDisplay rd = new ResultDisplay(rs, countrs.getInt(1), "DISCOUNTS " + col, Arrays.asList(col.split(",")), Arrays.asList(col.split(",")));
             } catch (SQLException vre1) {
                 JOptionPane.showMessageDialog(frame, vre1.getErrorCode() + " " + vre1.getMessage() + '\n', "Error ", JOptionPane.ERROR_MESSAGE);
                 System.out.println(vre1.getMessage());
