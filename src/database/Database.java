@@ -55,28 +55,19 @@ public class Database {
     }
 
     //division query
-    public List<Housekeeper2> findHousekeeperAssignedToEveryFloor() throws SQLException {
-        Statement stmt = connection.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT  * FROM housekeeper2 h WHERE  NOT EXISTS  (SELECT  * FROM  floor F WHERE  NOT EXISTS  (SELECT  * FROM  services_Assigns S WHERE s.sin = h.sin and s.floorNo = f.floorNo))");
+    public boolean deleteHousekeeper(int sin) throws SQLException {
+        int result = connection.createStatement().executeUpdate("delete from housekeeper2 where sin = " + sin);
+        return result == 1;
 
-        int wage;
-        String cs;
-        String phone;
-        String name;
-        int sin;
-        List<Housekeeper2> housekeeper = new ArrayList<>();
+    }
 
-        while (rs.next()) {
-            wage = rs.getInt("WAGE");
-            cs = rs.getString("CLEANINGSPECIALITY");
-            phone = rs.getString("PHONENO");
-            name = rs.getString("NAME");
-            sin = rs.getInt("SIN");
-            housekeeper.add(new Housekeeper2(name, phone, sin, wage, cs));
-        }
+    public boolean deleteRoomNo(int roomNo) throws SQLException {
+        int result = connection.createStatement().executeUpdate("delete from reserve_room_has_floor2 where roomNo = " + roomNo);
+        return result == 1;
 
-        return housekeeper;
     }
 }
+
+
 
 

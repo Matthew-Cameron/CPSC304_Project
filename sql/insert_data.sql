@@ -1,6 +1,6 @@
 
 insert into users
-values(1893, 'dvorak', 'Di4YueZhang', '6046789012', 'Antonin_Dvorak');
+values(1893, 'bob', 'bob', '6046789012', 'Bob_Dvorak');
 insert into users
 values(1801, 'beethoven', 'Di3YueZhang', '6047890123', 'Ludwig_Beethoven');
 insert into users
@@ -23,13 +23,13 @@ values(7777, 'bev', 'bev', '6049879871', 'Bevin_Knowles');
 insert into manager
 values(90000, 1893);
 insert into manager
-values(90000, 1801);
+values(80000, 1801);
 insert into manager
-values(90000, 1798);
+values(70000, 1798);
 insert into manager
-values(90000, 1892);
+values(50000, 1892);
 insert into manager
-values(90000, 1791);
+values(40000, 1791);
 
 insert into guest
 values('Standard', '9_Downing_Street', 0, 1111);
@@ -64,6 +64,7 @@ insert into reserve_Room_Has_Floor1
 values(299.99, 'Suite');
 insert into reserve_Room_Has_Floor1
 values(399.99, 'Double');
+insert into reserve_Room_Has_Floor1
 
 insert into housekeeper2
 values(20.00,'Beds', '6041234567', 'Isaac_Newton',171717);
@@ -120,6 +121,8 @@ insert into bill_Has_Generate_Bill
 values(999.99, 1013, 100.00, '2017-05-02', 5555,113,1798);
 insert into bill_Has_Generate_Bill
 values(999.99, 1014, 0.00, '2017-05-02', 7777,113,1798);
+insert into bill_Has_Generate_Bill
+values(456.5, 1054, 456.5, '2017-05-02',5555,213,1798);
  
 insert into discounts
 values(10, 1010, 1801);

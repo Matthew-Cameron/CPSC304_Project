@@ -38,7 +38,7 @@ public class Housekeeper2 implements Table{
         this.sin = sin;
     }
 
-     public int getSin(int sin) {
+     public int getSin() {
         return sin;
     }
 

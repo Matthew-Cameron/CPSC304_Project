@@ -16,6 +16,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -29,9 +30,13 @@ public class HomeScreen {
     private static JPanel mainPanel;
     private static JPanel buttonPanel;
     private static JPanel informationPanel;
-    private static JPanel medicalHistoryPanel;
-    private static JPanel schedulePanel;
-    private static JPanel activityPannel;
+    private static JTextField sinText;
+    private static JLabel sinLabel;
+    private static JButton submitHButton;
+    private static JTextField roomText;
+    private static JLabel roomNoLabel;
+    private static JButton submitRButton;
+
 
 
 
@@ -69,6 +74,36 @@ public class HomeScreen {
                 JButton seeRes = new JButton("View All Reservations");
                 seeRes.addActionListener(null);
                 buttonPanel.add(seeRes);
+
+                JButton findHousekeepersAssignedToAllRoom = new JButton("Housekeepers assigned to all floors");
+                findHousekeepersAssignedToAllRoom.addActionListener(new findHousekeepersAssignedToAllRoom());
+                buttonPanel.add(findHousekeepersAssignedToAllRoom);
+
+                sinLabel = new JLabel("Delete SIN");
+                sinLabel.setBounds(200, 100, 80, 25);
+                informationPanel.add(sinLabel);
+                sinText = new JTextField(7);
+                sinText.setBounds(100, 40, 50, 25);
+                informationPanel.add(sinText);
+                submitHButton = new JButton();
+                submitHButton.setText("Submit");
+                submitHButton.addActionListener(new viewDeleteHousekeeper());
+                informationPanel.add(submitHButton);
+                JButton viewSer = new JButton("View Services Assigned");
+                viewSer.addActionListener(new viewServicesAssigns());
+                buttonPanel.add(viewSer);
+
+                roomNoLabel = new JLabel("Delete room");
+                roomNoLabel.setBounds(200, 100, 80, 25);
+                informationPanel.add(roomNoLabel);
+                roomText = new JTextField(7);
+                roomText.setBounds(100, 40, 50, 25);
+                informationPanel.add(roomText);
+                submitRButton = new JButton();
+                submitRButton.setText("Submit");
+                submitRButton.addActionListener(new viewDeleteRoom());
+                informationPanel.add(submitRButton);
+
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
@@ -147,13 +182,13 @@ public class HomeScreen {
     }
 
     //Button actions from here on
-
     private static class viewRooms implements ActionListener
     {
         @Override
         public void actionPerformed(ActionEvent e) {
             try
             {
+
                 ResultSet rs = con.createStatement().executeQuery("select r2.roomno, r2.typeofroom, r2.floorno, r2.numofbeds, r1.cost from reserve_room_has_floor2 r2, reserve_room_has_floor1 r1 where r2.guserid is null and r1.typeofroom = r2.typeofroom");
                 ResultSet countrs = con.createStatement().executeQuery("select count(*) from reserve_room_has_floor2 where guserid is null");
                 countrs.next();
@@ -169,7 +204,89 @@ public class HomeScreen {
         }
     }
 
-    private static class makeReservation implements ActionListener
+    private static class findHousekeepersAssignedToAllRoom implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try
+            {
+
+                ResultSet rs = con.createStatement().executeQuery("SELECT  * FROM housekeeper2 h WHERE  NOT EXISTS  (SELECT  * FROM  floor F WHERE  NOT EXISTS  (SELECT  * FROM  services_Assigns S WHERE s.sin = h.sin and s.floorNo = f.floorNo))");
+                ResultSet countrs = con.createStatement().executeQuery("SELECT  COUNT(*) FROM housekeeper2 h WHERE  NOT EXISTS  (SELECT  * FROM  floor F WHERE  NOT EXISTS  (SELECT  * FROM  services_Assigns S WHERE s.sin = h.sin and s.floorNo = f.floorNo))");
+                countrs.next();
+
+
+            }
+            catch(SQLException vre1)
+            {
+                JOptionPane.showMessageDialog(frame, vre1.getErrorCode() + " " + vre1.getMessage() + '\n', "Error ", JOptionPane.ERROR_MESSAGE);
+                System.out.println(vre1.getMessage());
+                System.out.println(Arrays.toString(vre1.getStackTrace()));
+            }
+        }
+    }
+
+
+    private static class viewDeleteHousekeeper implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String givenSin = sinText.getText();
+
+            try {
+                if (Database.getInstance().deleteHousekeeper(Integer.parseInt(givenSin))) {
+                    JOptionPane.showMessageDialog(null, "Successfully deleted housekeeper with " + givenSin ,"Success", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Failed to delete housekeeper with " + givenSin, "Error", JOptionPane.INFORMATION_MESSAGE);
+                }
+                ResultSet rs = con.createStatement().executeQuery("SELECT  * FROM housekeeper2");
+                ResultSet countrs = con.createStatement().executeQuery("SELECT  COUNT(*) FROM housekeeper2");
+                countrs.next();
+
+                ResultDisplay rd = new ResultDisplay(rs, countrs.getInt(1), "List of Housekeepers", Arrays.asList("Wage", "Cleaning Speciality", "PhoneNo", "Name", "SIN"), Arrays.asList("WAGE", "CLEANINGSPECIALITY", "PHONENO", "NAME", "SIN"));
+
+
+
+            }
+            catch(SQLException vre1)
+            {
+                JOptionPane.showMessageDialog(frame, vre1.getErrorCode() + " " + vre1.getMessage() + '\n', "Error ", JOptionPane.ERROR_MESSAGE);
+                System.out.println(vre1.getMessage());
+                System.out.println(Arrays.toString(vre1.getStackTrace()));
+            }
+        }
+    }
+
+    private static class viewDeleteRoom implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String givenRoom = roomText.getText();
+
+            try {
+                if (Database.getInstance().deleteRoomNo(Integer.parseInt(givenRoom))) {
+                    JOptionPane.showMessageDialog(null, "Successfully deleted roomNo " + givenRoom ,"Success", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Failed to delete roomNo " + givenRoom, "Error", JOptionPane.INFORMATION_MESSAGE);
+                }
+                ResultSet rs = con.createStatement().executeQuery("SELECT  * FROM reserve_room_has_floor2");
+                ResultSet countrs = con.createStatement().executeQuery("SELECT  COUNT(*) FROM reserve_room_has_floor2");
+                countrs.next();
+
+                ResultDisplay rd = new ResultDisplay(rs, countrs.getInt(1), "Housekeeper assigned to all floors", Arrays.asList("RoomNo", "Type", "Flor", "Guest", "BookingNo", "From date", "To date", "Beds"), Arrays.asList("ROOMNO", "TYPEOFROOM", "FLOORNO", "GUSERID", "BOOKINGNO", "FROMDATE", "TODATE", "NUMOFBEDS"));
+
+
+            }
+            catch(SQLException vre1)
+            {
+                JOptionPane.showMessageDialog(frame, vre1.getErrorCode() + " " + vre1.getMessage() + '\n', "Error ", JOptionPane.ERROR_MESSAGE);
+                System.out.println(vre1.getMessage());
+                System.out.println(Arrays.toString(vre1.getStackTrace()));
+            }
+        }
+    }
+
+private static class makeReservation implements ActionListener
     {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -180,6 +297,28 @@ public class HomeScreen {
             catch(SQLException vre1)
             {
                 JOptionPane.showMessageDialog(frame, vre1.getErrorCode() + " " + vre1.getMessage() + '\n', "Fail", JOptionPane.ERROR_MESSAGE);
+                System.out.println(vre1.getMessage());
+                System.out.println(Arrays.toString(vre1.getStackTrace()));
+            }
+        }
+    }
+
+    private static class viewServicesAssigns implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try
+            {
+
+                ResultSet rs = con.createStatement().executeQuery("SELECT  * FROM services_Assigns");
+                ResultSet countrs = con.createStatement().executeQuery("SELECT COUNT(*) FROM services_Assigns");
+                countrs.next();
+
+                ResultDisplay rd = new ResultDisplay(rs, countrs.getInt(1), "Services Assigned", Arrays.asList("SIN", "Floor", "Manager"), Arrays.asList("SIN", "FLOORNO", "MUSERID"));
+            }
+            catch(SQLException vre1)
+            {
+                JOptionPane.showMessageDialog(frame, vre1.getErrorCode() + " " + vre1.getMessage() + '\n', "Error ", JOptionPane.ERROR_MESSAGE);
                 System.out.println(vre1.getMessage());
                 System.out.println(Arrays.toString(vre1.getStackTrace()));
             }
@@ -203,6 +342,7 @@ public class HomeScreen {
             }
         }
     }
+
 
     /*private static class seeAllReservations implements ActionListener
     {
