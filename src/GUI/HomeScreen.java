@@ -423,24 +423,48 @@ public class HomeScreen {
         public void actionPerformed(ActionEvent e) {
             String givenSin = sinText.getText();
 
-            try {
-                if (Database.getInstance().deleteHousekeeper(Integer.parseInt(givenSin))) {
-                    JOptionPane.showMessageDialog(null, "Successfully deleted housekeeper with " + givenSin, "Success", JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    JOptionPane.showMessageDialog(null, "Failed to delete housekeeper with " + givenSin, "Error", JOptionPane.INFORMATION_MESSAGE);
+            try{
+                int num = Integer.parseInt(givenSin);
+                try {
+                    if (Database.getInstance().deleteHousekeeper(num)) {
+                        JOptionPane.showMessageDialog(null, "Successfully deleted housekeeper with " + givenSin, "Success", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Failed to delete housekeeper with " + givenSin, "Error", JOptionPane.INFORMATION_MESSAGE);
+                    } try {
+                        if (Database.getInstance().deleteHousekeeper(Integer.parseInt(givenSin))) {
+                            JOptionPane.showMessageDialog(null, "Successfully deleted housekeeper with " + givenSin, "Success", JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Failed to delete housekeeper with " + givenSin, "Error", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                        ResultSet rs = con.createStatement().executeQuery("SELECT  * FROM housekeeper2");
+                        ResultSet countrs = con.createStatement().executeQuery("SELECT  COUNT(*) FROM housekeeper2");
+                        countrs.next();
+
+                        ResultDisplay rd = new ResultDisplay(rs, countrs.getInt(1), "List of Housekeepers", Arrays.asList("Wage", "Cleaning Speciality", "PhoneNo", "Name", "SIN"), Arrays.asList("WAGE", "CLEANINGSPECIALITY", "PHONENO", "NAME", "SIN"));
+
+
+                    } catch (SQLException vre1) {
+                        JOptionPane.showMessageDialog(frame, vre1.getErrorCode() + " " + vre1.getMessage() + '\n', "Error ", JOptionPane.ERROR_MESSAGE);
+                        System.out.println(vre1.getMessage());
+                        System.out.println(Arrays.toString(vre1.getStackTrace()));
+                    }
+                    ResultSet rs = con.createStatement().executeQuery("SELECT  * FROM housekeeper2");
+                    ResultSet countrs = con.createStatement().executeQuery("SELECT  COUNT(*) FROM housekeeper2");
+                    countrs.next();
+
+                    ResultDisplay rd = new ResultDisplay(rs, countrs.getInt(1), "List of Housekeepers", Arrays.asList("Wage", "Cleaning Speciality", "PhoneNo", "Name", "SIN"), Arrays.asList("WAGE", "CLEANINGSPECIALITY", "PHONENO", "NAME", "SIN"));
+
+
+                } catch (SQLException vre1) {
+                    JOptionPane.showMessageDialog(frame, vre1.getErrorCode() + " " + vre1.getMessage() + '\n', "Error ", JOptionPane.ERROR_MESSAGE);
+                    System.out.println(vre1.getMessage());
+                    System.out.println(Arrays.toString(vre1.getStackTrace()));
                 }
-                ResultSet rs = con.createStatement().executeQuery("SELECT  * FROM housekeeper2");
-                ResultSet countrs = con.createStatement().executeQuery("SELECT  COUNT(*) FROM housekeeper2");
-                countrs.next();
 
-                ResultDisplay rd = new ResultDisplay(rs, countrs.getInt(1), "List of Housekeepers", Arrays.asList("Wage", "Cleaning Speciality", "PhoneNo", "Name", "SIN"), Arrays.asList("WAGE", "CLEANINGSPECIALITY", "PHONENO", "NAME", "SIN"));
-
-
-            } catch (SQLException vre1) {
-                JOptionPane.showMessageDialog(frame, vre1.getErrorCode() + " " + vre1.getMessage() + '\n', "Error ", JOptionPane.ERROR_MESSAGE);
-                System.out.println(vre1.getMessage());
-                System.out.println(Arrays.toString(vre1.getStackTrace()));
+            } catch (NumberFormatException f){
+                JOptionPane.showMessageDialog(null, "Did not input an integer " , "Fail", JOptionPane.INFORMATION_MESSAGE);
             }
+
         }
     }
 
@@ -448,24 +472,29 @@ public class HomeScreen {
         @Override
         public void actionPerformed(ActionEvent e) {
             String givenRoom = roomText.getText();
-
             try {
-                if (Database.getInstance().deleteRoomNo(Integer.parseInt(givenRoom))) {
-                    JOptionPane.showMessageDialog(null, "Successfully deleted roomNo " + givenRoom, "Success", JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    JOptionPane.showMessageDialog(null, "Failed to delete roomNo " + givenRoom, "Error", JOptionPane.INFORMATION_MESSAGE);
+                int num = Integer.parseInt(givenRoom);
+
+                try {
+                    if (Database.getInstance().deleteRoomNo(num)) {
+                        JOptionPane.showMessageDialog(null, "Successfully deleted roomNo " + givenRoom, "Success", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Failed to delete roomNo " + givenRoom, "Error", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    ResultSet rs = con.createStatement().executeQuery("SELECT  * FROM reserve_room_has_floor2");
+                    ResultSet countrs = con.createStatement().executeQuery("SELECT  COUNT(*) FROM reserve_room_has_floor2");
+                    countrs.next();
+
+                    ResultDisplay rd = new ResultDisplay(rs, countrs.getInt(1), "Housekeeper assigned to all floors", Arrays.asList("RoomNo", "Type", "Flor", "Guest", "BookingNo", "From date", "To date", "Beds"), Arrays.asList("ROOMNO", "TYPEOFROOM", "FLOORNO", "GUSERID", "BOOKINGNO", "FROMDATE", "TODATE", "NUMOFBEDS"));
+
+
+                } catch (SQLException vre1) {
+                    JOptionPane.showMessageDialog(frame, vre1.getErrorCode() + " " + vre1.getMessage() + '\n', "Error ", JOptionPane.ERROR_MESSAGE);
+                    System.out.println(vre1.getMessage());
+                    System.out.println(Arrays.toString(vre1.getStackTrace()));
                 }
-                ResultSet rs = con.createStatement().executeQuery("SELECT  * FROM reserve_room_has_floor2");
-                ResultSet countrs = con.createStatement().executeQuery("SELECT  COUNT(*) FROM reserve_room_has_floor2");
-                countrs.next();
-
-                ResultDisplay rd = new ResultDisplay(rs, countrs.getInt(1), "Housekeeper assigned to all floors", Arrays.asList("RoomNo", "Type", "Flor", "Guest", "BookingNo", "From date", "To date", "Beds"), Arrays.asList("ROOMNO", "TYPEOFROOM", "FLOORNO", "GUSERID", "BOOKINGNO", "FROMDATE", "TODATE", "NUMOFBEDS"));
-
-
-            } catch (SQLException vre1) {
-                JOptionPane.showMessageDialog(frame, vre1.getErrorCode() + " " + vre1.getMessage() + '\n', "Error ", JOptionPane.ERROR_MESSAGE);
-                System.out.println(vre1.getMessage());
-                System.out.println(Arrays.toString(vre1.getStackTrace()));
+            } catch (NumberFormatException f) {
+                JOptionPane.showMessageDialog(null, "Did not input an integer ", "Fail", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }
@@ -514,6 +543,8 @@ public class HomeScreen {
             }
         }
     }
+
+
 
 
 
