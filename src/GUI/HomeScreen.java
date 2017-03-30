@@ -24,6 +24,7 @@ public class HomeScreen {
 
     static String col = "";
     static String[] choices = { "BILLID","MUSERID", "AMOUNT", "BILLID,MUSERID", "BILLID,AMOUNT", "MUSERID,AMOUNT", "BILLID,MUSERID,AMOUNT"};
+    static String project;
     static final JComboBox<String> cb = new JComboBox<String>(choices);
 
     private static int WIDTH = 1000;
@@ -40,6 +41,7 @@ public class HomeScreen {
     private static JTextField sinText;
     private static JTextField roomText;
     private static JTextField hireText;
+    private static JTextField projText;
 
     // Constructs homescreen for a manager
     public HomeScreen(int userId, boolean isManager) {
@@ -108,7 +110,7 @@ public class HomeScreen {
                 addHouseLabel.setBounds(200, 100, 80, 25);
                 informationPanel.add(addHouseLabel);
                 hireText = new JTextField(7);
-                roomText.setBounds(100, 40, 50, 25);
+                hireText.setBounds(100, 40, 50, 25);
                 informationPanel.add(hireText);
                 JButton addHouseButton = new JButton();
                 addHouseButton.setText("Submit");
@@ -151,6 +153,9 @@ public class HomeScreen {
                 selectionPanel.add(lbl);
                 cb.setVisible(true);
                 selectionPanel.add(cb);
+                projText = new JTextField(7);
+                projText.setBounds(100, 40, 100, 25);
+                selectionPanel.add(projText);
                 JButton btn = new JButton("OK");
                 btn.addActionListener(new viewSelectionQuery());
                 selectionPanel.add(btn);
@@ -267,15 +272,23 @@ public class HomeScreen {
         @Override
         public void actionPerformed(ActionEvent e) {
             col = cb.getSelectedItem().toString();
+            String givenAmount = projText.getText();
             try {
-                ResultSet rs = con.createStatement().executeQuery("select " + col + " from DISCOUNTS");
-                ResultSet countrs = con.createStatement().executeQuery("select count(*) from DISCOUNTS");
-                countrs.next();
-                ResultDisplay rd = new ResultDisplay(rs, countrs.getInt(1), "DISCOUNTS " + col, Arrays.asList(col.split(",")), Arrays.asList(col.split(",")));
-            } catch (SQLException vre1) {
-                JOptionPane.showMessageDialog(frame, vre1.getErrorCode() + " " + vre1.getMessage() + '\n', "Error ", JOptionPane.ERROR_MESSAGE);
-                System.out.println(vre1.getMessage());
-                System.out.println(Arrays.toString(vre1.getStackTrace()));
+                int num = Integer.parseInt(givenAmount);
+                try {
+                    ResultSet rs = con.createStatement().executeQuery("select " + col + " from DISCOUNTS where amount <=" + givenAmount);
+
+                    ResultSet countrs = con.createStatement().executeQuery("select count(*) from DISCOUNTS where amount <=" + givenAmount);
+                    countrs.next();
+                    ResultDisplay rd = new ResultDisplay(rs, countrs.getInt(1), "DISCOUNTS " + col, Arrays.asList(col.split(",")), Arrays.asList(col.split(",")));
+                } catch (SQLException vre1) {
+                    JOptionPane.showMessageDialog(frame, vre1.getErrorCode() + " " + vre1.getMessage() + '\n', "Error ", JOptionPane.ERROR_MESSAGE);
+                    System.out.println(vre1.getMessage());
+                    System.out.println(Arrays.toString(vre1.getStackTrace()));
+                }
+            }
+            catch (NumberFormatException f) {
+                JOptionPane.showMessageDialog(null, "Did not input an integer ", "Fail", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }
