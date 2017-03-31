@@ -649,7 +649,7 @@ public class HomeScreen {
 
 
             try {
-                if (Database.getInstance().updateDiscount(amount, billid)) {
+                if (Database.getInstance().updateDiscount(amount, billid, userid)) {
                     JOptionPane.showMessageDialog(null, "Successfully updated bill with id " + billid, "Success", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(null, "Failed to update bill with id " + billid, "Error", JOptionPane.INFORMATION_MESSAGE);
@@ -772,7 +772,7 @@ public class HomeScreen {
                     if (Database.getInstance().deleteAllReservation(userid)) {
                         JOptionPane.showMessageDialog(null, "Successfully deleted all reservations " + userid, "Success", JOptionPane.INFORMATION_MESSAGE);
                     } else {
-                        JOptionPane.showMessageDialog(null, "Failed to delete reservations " + userid, "Error", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(null,  "You no longer have any reservations " + userid, "Error", JOptionPane.INFORMATION_MESSAGE);
                     }
                     ResultSet rs = con.createStatement().executeQuery("SELECT *  FROM reserve_room_has_floor2 where guserid = " + userid);
                     ResultSet countrs = con.createStatement().executeQuery("SELECT  COUNT(*) FROM reserve_room_has_floor2 where guserid = " + userid);

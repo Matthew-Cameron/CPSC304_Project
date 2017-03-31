@@ -57,10 +57,10 @@ public class Database {
         int result = connection.createStatement().executeUpdate("insert  into housekeeper2 values(NULL, NULL, NULL, NULL," + sin + ")");
         return result == 1;
     }
-    
+
     //update query
-    public boolean updateDiscount(String amount, String bid) throws SQLException{
-        int result = connection.createStatement().executeUpdate("update DISCOUNTS set AMOUNT = " + amount + " where BILLID = " + bid);
+    public boolean updateDiscount(String amount, String bid, int managerID) throws SQLException{
+        int result = connection.createStatement().executeUpdate("update DISCOUNTS set AMOUNT = " + amount + " ,mUserID = " + managerID + " where BILLID = " + bid);
         return result == 1;
     }
 
