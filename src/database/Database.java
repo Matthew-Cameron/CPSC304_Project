@@ -6,18 +6,9 @@ package database;
  */
 
 
-
-import tables.Reserve_Room_Has_Floor2;
-
-import javax.swing.JOptionPane;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import tables.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.sql.*;
 
 public class Database {
     private static Database instance = null;
@@ -68,8 +59,8 @@ public class Database {
     }
     
     //update query
-    public boolean updateDiscount(int amt) throws SQLException{
-        int result = connection.createStatement().executeUpdate("update discounts set amount = " + amt + " where billid = 1010 and mUserid = 1801");
+    public boolean updateDiscount(String amount, String bid) throws SQLException{
+        int result = connection.createStatement().executeUpdate("update DISCOUNTS set AMOUNT = " + amount + " where BILLID = " + bid);
         return result == 1;
     }
 

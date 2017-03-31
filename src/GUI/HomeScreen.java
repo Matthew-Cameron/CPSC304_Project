@@ -3,22 +3,20 @@ package GUI;
 /**
  * Created by Matthew on 2017-03-26.
  */
+
 import database.Database;
-import tables.*;
+import tables.Guest;
+import tables.Manager;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
-import java.awt.GridLayout;
-import java.awt.FlowLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
-
-import java.util.LinkedList;
-import java.util.List;
 
 public class HomeScreen {
 
@@ -44,13 +42,20 @@ public class HomeScreen {
     private static JPanel selectionPanel;
     private static JPanel informationPanel;
     private static JPanel simpleOpsPanel;
+
     private static JPanel guestDeletionPanel;
+
+    private static JPanel updateDiscountPanel;
     private static JTextField sinText;
     private static JTextField roomText;
     private static JTextField hireText;
     private static JTextField projText;
+
     private static JTextField roomDeletedText;
 
+
+    private static JTextField billIdText;
+    private static JTextField discountText;
 
     // Constructs homescreen for a manager
     public HomeScreen(int userId, boolean isManager) {
@@ -173,6 +178,22 @@ public class HomeScreen {
                 btn.addActionListener(new viewSelectionQuery());
                 selectionPanel.add(btn);
 
+                JLabel lbl2 = new JLabel("Update Bill with Id:");
+                lbl2.setVisible(true);
+                updateDiscountPanel.add(lbl2);
+                billIdText = new JTextField(7);
+                billIdText.setBounds(100, 40, 100, 25);
+                updateDiscountPanel.add(billIdText);
+                JLabel lbl3 = new JLabel("with new discount:");
+                lbl3.setVisible(true);
+                updateDiscountPanel.add(lbl3);
+                discountText = new JTextField(7);
+                discountText.setBounds(100, 40, 100, 25);
+                updateDiscountPanel.add(discountText);
+                JButton btn1 = new JButton("OK");
+                btn1.addActionListener(new viewDiscountBillQuery());
+                updateDiscountPanel.add(btn1);
+
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
@@ -294,6 +315,19 @@ public class HomeScreen {
 
         selectionPanel = new JPanel();
         mainPanel.add(selectionPanel);
+        selectionPanel.setLayout(new FlowLayout());
+        selectionPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
+                "Select/Project from Discounts",
+                TitledBorder.CENTER,
+                TitledBorder.TOP));
+
+        updateDiscountPanel = new JPanel();
+        mainPanel.add(updateDiscountPanel);
+        updateDiscountPanel.setLayout(new FlowLayout());
+        updateDiscountPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
+                "Update Bill Discount",
+                TitledBorder.CENTER,
+                TitledBorder.TOP));
     }
 
     //Button actions from here on
@@ -561,6 +595,35 @@ public class HomeScreen {
         }
     }
 
+    private static class viewDiscountBillQuery implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String billid = billIdText.getText();
+            String amount = discountText.getText();
+
+
+            try {
+                if (Database.getInstance().updateDiscount(amount, billid)) {
+                    JOptionPane.showMessageDialog(null, "Successfully updated bill with id " + billid, "Success", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Failed to update bill with id " + billid, "Error", JOptionPane.INFORMATION_MESSAGE);
+                }
+                ResultSet rs = con.createStatement().executeQuery("SELECT * FROM discounts");
+                ResultSet countrs = con.createStatement().executeQuery("SELECT  COUNT(*) FROM discounts");
+                countrs.next();
+
+                ResultDisplay rd = new ResultDisplay(rs, countrs.getInt(1), "Discounts", Arrays.asList("Amount", "Bill Id", "Manager Id"), Arrays.asList("AMOUNT", "BILLID", "MUSERID"));
+
+
+            } catch (SQLException vre1) {
+                JOptionPane.showMessageDialog(frame, vre1.getErrorCode() + " " + vre1.getMessage() + '\n', "Error ", JOptionPane.ERROR_MESSAGE);
+                System.out.println(vre1.getMessage());
+                System.out.println(Arrays.toString(vre1.getStackTrace()));
+            }
+        }
+    }
+
+
     private static class viewDeleteRoom implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -669,7 +732,7 @@ public class HomeScreen {
         public void actionPerformed(ActionEvent e) {
             try {
 
-                ResultSet rs = con.createStatement().executeQuery("SELECT  * FROM services_Assigns");
+                ResultSet rs = con.createStatement().executeQuery("SELECT  * FROM services_Assigns order by floorno asc");
                 ResultSet countrs = con.createStatement().executeQuery("SELECT COUNT(*) FROM services_Assigns");
                 countrs.next();
 
@@ -758,39 +821,7 @@ public class HomeScreen {
     {
         @Override
         public void actionPerformed(ActionEvent e) {
-            new Bills(con);
+            new Bills();
         }
     }
-    
-    //update query
-    private static class updateDiscount implements ActionListener
-    {
-        @Override
-            public void actionPerformed(ActionEvent e) {
-            try {
-                int num = 110;
-
-                try {
-                    if (Database.getInstance().updateDiscount(num)) {
-                        JOptionPane.showMessageDialog(null, "Successfully applied a discount of " + num, "percent; congratulations!", JOptionPane.INFORMATION_MESSAGE);
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Failed to apply discount ", "Error", JOptionPane.INFORMATION_MESSAGE);
-                    }
-                    ResultSet rs = con.createStatement().executeQuery("SELECT  * FROM Discounts");
-                    ResultSet countrs = con.createStatement().executeQuery("SELECT  COUNT(*) FROM Discounts");
-                    countrs.next();
-
-                    ResultDisplay rd = new ResultDisplay(rs, countrs.getInt(1), "List of Discounts", Arrays.asList("Amount", "BillID", "ManagerUserID"), Arrays.asList("AMOUNT", "BILLID", "MUSERID"));
-
-                } catch (SQLException vre1) {
-                    JOptionPane.showMessageDialog(frame, vre1.getErrorCode() + " " + vre1.getMessage() + '\n', "Error ", JOptionPane.ERROR_MESSAGE);
-                    System.out.println(vre1.getMessage());
-                    System.out.println(Arrays.toString(vre1.getStackTrace()));
-                }
-            } catch (NumberFormatException f) {
-                JOptionPane.showMessageDialog(null, "Did not input a valid number ", "Fail", JOptionPane.INFORMATION_MESSAGE);
-            }
-        }
-    }
-
 }

@@ -24,7 +24,7 @@ public class LoginScreen {
         loginConnection = Database.getInstance();
 
         frame = new JFrame("Login");
-        frame.setSize(800, 450);    //16:9
+        frame.setSize(800, 450);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         JPanel panel = new JPanel();
