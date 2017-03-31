@@ -653,7 +653,7 @@ public class HomeScreen {
         public void actionPerformed(ActionEvent e) {
             try {
 
-                ResultSet rs = con.createStatement().executeQuery("SELECT  * FROM services_Assigns");
+                ResultSet rs = con.createStatement().executeQuery("SELECT  * FROM services_Assigns order by floorno asc");
                 ResultSet countrs = con.createStatement().executeQuery("SELECT COUNT(*) FROM services_Assigns");
                 countrs.next();
 
