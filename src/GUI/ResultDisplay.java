@@ -3,24 +3,16 @@ package GUI;
 /**
  * Created by Matthew on 2017-03-26.
  */
-import database.Database;
-import tables.*;
-
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
-import java.awt.GridLayout;
-import java.awt.FlowLayout;
-import java.awt.BorderLayout;
-import java.sql.Connection;
+import java.awt.*;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.Types;
 import java.util.List;
 
 public class ResultDisplay {
 
     private static int WIDTH = 500;
-    private static int HEIGHT = 25;
+    private static int HEIGHT = 60;
 
     private static JFrame frame;
     private static JPanel mainPanel;

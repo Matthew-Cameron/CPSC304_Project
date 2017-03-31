@@ -41,6 +41,7 @@ public class HomeScreen {
     private static JPanel membershipBillPanel;
     private static JPanel selectionPanel;
     private static JPanel informationPanel;
+    private static JPanel simpleOpsPanel;
     private static JTextField sinText;
     private static JTextField roomText;
     private static JTextField hireText;
@@ -86,39 +87,39 @@ public class HomeScreen {
 
                 JLabel sinLabel = new JLabel("Delete SIN");
                 sinLabel.setBounds(200, 100, 80, 25);
-                informationPanel.add(sinLabel);
+                simpleOpsPanel.add(sinLabel);
                 sinText = new JTextField(7);
                 sinText.setBounds(100, 40, 50, 25);
-                informationPanel.add(sinText);
+                simpleOpsPanel.add(sinText);
                 JButton submitHButton = new JButton();
                 submitHButton.setText("Submit");
                 submitHButton.addActionListener(new viewDeleteHousekeeper());
-                informationPanel.add(submitHButton);
+                simpleOpsPanel.add(submitHButton);
                 JButton viewSer = new JButton("View Services Assigned");
                 viewSer.addActionListener(new viewServicesAssigns());
                 buttonPanel.add(viewSer);
 
                 JLabel roomNoLabel = new JLabel("Delete room");
                 roomNoLabel.setBounds(200, 100, 80, 25);
-                informationPanel.add(roomNoLabel);
+                simpleOpsPanel.add(roomNoLabel);
                 roomText = new JTextField(7);
                 roomText.setBounds(100, 40, 50, 25);
-                informationPanel.add(roomText);
+                simpleOpsPanel.add(roomText);
                 JButton submitRButton = new JButton();
                 submitRButton.setText("Submit");
                 submitRButton.addActionListener(new viewDeleteRoom());
-                informationPanel.add(submitRButton);
+                simpleOpsPanel.add(submitRButton);
 
                 JLabel addHouseLabel = new JLabel("Hire housekeeper");
                 addHouseLabel.setBounds(200, 100, 80, 25);
-                informationPanel.add(addHouseLabel);
+                simpleOpsPanel.add(addHouseLabel);
                 hireText = new JTextField(7);
                 hireText.setBounds(100, 40, 50, 25);
-                informationPanel.add(hireText);
+                simpleOpsPanel.add(hireText);
                 JButton addHouseButton = new JButton();
                 addHouseButton.setText("Submit");
                 addHouseButton.addActionListener(new hireHousekeeper());
-                informationPanel.add(addHouseButton);
+                simpleOpsPanel.add(addHouseButton);
 
                 JButton seeUnpaidBills = new JButton("Unpaid Bills");
                 seeUnpaidBills.addActionListener(new viewUnpaidBills());
@@ -141,6 +142,9 @@ public class HomeScreen {
                 JButton billNum = new JButton("Number of Bills");
                 billNum.addActionListener(new viewNumBill());
                 billPanel.add(billNum);
+                JButton genBill = new JButton("Generate Bills");
+                genBill.addActionListener(new generateBill());
+                billPanel.add(genBill);
                 JButton maxAvgMembership = new JButton("Membership with the maximum average amount paid per bill");
                 maxAvgMembership.addActionListener(new viewMaxAvgMembership());
                 membershipBillPanel.add(maxAvgMembership);
@@ -235,17 +239,37 @@ public class HomeScreen {
                 TitledBorder.CENTER,
                 TitledBorder.TOP));
 
+        simpleOpsPanel = new JPanel();
+        mainPanel.add(simpleOpsPanel);
+        simpleOpsPanel.setLayout(new GridLayout(3, 3, 8, 8));
+        simpleOpsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
+                "Simple Operations",
+                TitledBorder.CENTER,
+                TitledBorder.TOP));
+
         buttonPanel = new JPanel();
         mainPanel.add(buttonPanel);
         buttonPanel.setLayout(new FlowLayout());
+        buttonPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
+                "Buttons",
+                TitledBorder.CENTER,
+                TitledBorder.TOP));
 
         billPanel = new JPanel();
         mainPanel.add(billPanel);
         billPanel.setLayout(new FlowLayout());
+        billPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
+                "Bills",
+                TitledBorder.CENTER,
+                TitledBorder.TOP));
 
         membershipBillPanel = new JPanel();
         mainPanel.add(membershipBillPanel);
         membershipBillPanel.setLayout(new FlowLayout());
+        membershipBillPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
+                "Membership Operations",
+                TitledBorder.CENTER,
+                TitledBorder.TOP));
 
         selectionPanel = new JPanel();
         mainPanel.add(selectionPanel);
@@ -596,11 +620,6 @@ public class HomeScreen {
         }
     }
 
-
-
-
-
-
     private static class seeAllReservations implements ActionListener
     {
 
@@ -653,7 +672,13 @@ public class HomeScreen {
         }
     }
 
-
-
+    //This is where the fun begins
+    private static class generateBill implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new Bills(con);
+        }
+    }
 
 }
