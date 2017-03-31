@@ -184,7 +184,6 @@ public class HomeScreen {
                 JButton btn1 = new JButton("OK");
                 btn1.addActionListener(new viewDiscountBillQuery());
                 updateDiscountPanel.add(btn1);
-                // update DISCOUNTS set AMOUNT = 80 where BILLID = 1010
 
             } catch (Exception e) {
                 System.out.println(e.getMessage());

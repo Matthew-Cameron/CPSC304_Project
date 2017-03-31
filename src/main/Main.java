@@ -8,7 +8,7 @@ import GUI.LoginScreen;
 public class Main {
 
     public static void main(String[] args){
-        LoginScreen newLoginScreen = new LoginScreen();
+        LoginScreen loginScreen = new LoginScreen();
     }
 
 }
