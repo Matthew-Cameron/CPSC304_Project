@@ -32,9 +32,9 @@ public class Database {
             DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
             String connectionURL = "jdbc:oracle:thin:@localhost:1522:ug";
             connection = DriverManager.getConnection(connectionURL, "ora_g0l0b", "a20090156");
-            System.out.println("WE ARE CONNECTED");
+            System.out.println("DATABASE: This is where the fun begins!");
         } catch (SQLException e) {
-            System.out.println("FISSION MAILED");
+            System.out.println("DATABASE: It's failure, then.");
             System.out.println(e.getMessage());
             System.exit(1);
         }
@@ -48,10 +48,6 @@ public class Database {
 
     public Connection getConnection() {
         return connection;
-    }
-
-    public int createQuery(String q) {
-        return 0;
     }
 
     //deletion query

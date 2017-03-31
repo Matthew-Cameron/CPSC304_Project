@@ -8,6 +8,7 @@ import database.Database;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.ResultSet;
 
@@ -46,6 +47,7 @@ public class LoginScreen {
 
         JButton loginButton = new JButton("Login");
         loginButton.setBounds(330, 200, 160, 30);
+        loginButton.setMnemonic(KeyEvent.VK_ENTER);
         loginButton.addActionListener(new GetIn());
         panel.add(loginButton);
 

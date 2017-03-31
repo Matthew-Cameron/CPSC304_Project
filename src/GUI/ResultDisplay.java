@@ -50,6 +50,7 @@ public class ResultDisplay {
                 i++;
             }
         }catch (Exception e) {
+            new JOptionPane("Error displaying results: \n" + e.getMessage(), JOptionPane.ERROR_MESSAGE);
             System.out.println(e.getMessage());
         }
 
@@ -58,6 +59,7 @@ public class ResultDisplay {
         JScrollPane scrollPane = new JScrollPane(timetable);
         schedulePanel.add(scrollPane, BorderLayout.CENTER);
         overlaySchedulesPanel.add(schedulePanel);
+        frame.pack();
         frame.setVisible(true);
     }
 }

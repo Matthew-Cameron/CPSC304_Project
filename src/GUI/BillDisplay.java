@@ -7,6 +7,8 @@ import tables.Bill_Has_Generate_Bill;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class BillDisplay {
     private static int WIDTH = 500;
@@ -15,7 +17,7 @@ public class BillDisplay {
     private static JFrame frame;
     private static JPanel mainPanel;
 
-    BillDisplay(Bill_Has_Generate_Bill theBill)
+    BillDisplay(ResultSet rs) throws SQLException
     {
         frame = new JFrame("Bill");
         mainPanel = new JPanel();
@@ -23,6 +25,11 @@ public class BillDisplay {
 
         frame.setSize(WIDTH, HEIGHT);
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        frame.setLayout(new FlowLayout());
+        frame.setLayout(new GridLayout(3, 2));
+
+        frame.add(new JLabel(rs.getString("Room No")));
+
+        frame.pack();
+        frame.setVisible(true);
     }
 }

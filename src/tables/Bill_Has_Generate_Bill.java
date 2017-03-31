@@ -21,7 +21,7 @@ public class Bill_Has_Generate_Bill implements Table {
         this.amountDue = amountDue;
         this.billId = billId;
         this.amountPaid = amountPaid;
-        this.dayOfBill = dayOfBill;
+        this.dayOfBill = dateOfBill;
         this.gUserid = gUserid;
         this.roomNo = roomNo;
         this.mUserid = mUserid;
