@@ -29,6 +29,7 @@ public class HomeScreen {
     static String[] choices1 = { "AMOUNT =","AMOUNT >", "AMOUNT <" };
     static final JComboBox<String> cb1 = new JComboBox<String>(choices1);
     static int userid;
+    static Boolean isM;
 
 
     private static int WIDTH = 1000;
@@ -62,6 +63,7 @@ public class HomeScreen {
 
     // Constructs homescreen for a manager
     public HomeScreen(int userId, boolean isManager) {
+        isM = isManager;
         con = Database.getInstance().getConnection();
         if (isManager) {
             try {
@@ -289,6 +291,7 @@ public class HomeScreen {
 
     // Creates layout of homescreen
     private void generateStructure() {
+
         frame = new JFrame("Hotel");
         frame.setSize(WIDTH, HEIGHT);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -322,45 +325,47 @@ public class HomeScreen {
                 TitledBorder.CENTER,
                 TitledBorder.TOP));
 
-        billPanel = new JPanel();
-        mainPanel.add(billPanel);
-        billPanel.setLayout(new FlowLayout());
-        billPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
-                "Bills",
-                TitledBorder.CENTER,
-                TitledBorder.TOP));
+        if (isM){
+            billPanel = new JPanel();
+            mainPanel.add(billPanel);
+            billPanel.setLayout(new FlowLayout());
+            billPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
+                    "Bills",
+                    TitledBorder.CENTER,
+                    TitledBorder.TOP));
 
-        membershipBillPanel = new JPanel();
-        mainPanel.add(membershipBillPanel);
-        membershipBillPanel.setLayout(new FlowLayout());
-        membershipBillPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
-                "Membership Operations",
-                TitledBorder.CENTER,
-                TitledBorder.TOP));
+            membershipBillPanel = new JPanel();
+            mainPanel.add(membershipBillPanel);
+            membershipBillPanel.setLayout(new FlowLayout());
+            membershipBillPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
+                    "Membership Operations",
+                    TitledBorder.CENTER,
+                    TitledBorder.TOP));
 
-        selectionPanel = new JPanel();
-        mainPanel.add(selectionPanel);
-        selectionPanel.setLayout(new FlowLayout());
-        selectionPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
-                "Select/Project from Discounts",
-                TitledBorder.CENTER,
-                TitledBorder.TOP));
+            selectionPanel = new JPanel();
+            mainPanel.add(selectionPanel);
+            selectionPanel.setLayout(new FlowLayout());
+            selectionPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
+                    "Select/Project from Discounts",
+                    TitledBorder.CENTER,
+                    TitledBorder.TOP));
 
-        updateDiscountPanel = new JPanel();
-        mainPanel.add(updateDiscountPanel);
-        updateDiscountPanel.setLayout(new FlowLayout());
-        updateDiscountPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
-                "Update Bill Discount",
-                TitledBorder.CENTER,
-                TitledBorder.TOP));
-
-        makeReservationPanel = new JPanel();
-        mainPanel.add(makeReservationPanel);
-        makeReservationPanel.setLayout(new FlowLayout());
-        makeReservationPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
-                "Make Reservation",
-                TitledBorder.CENTER,
-                TitledBorder.TOP));
+            updateDiscountPanel = new JPanel();
+            mainPanel.add(updateDiscountPanel);
+            updateDiscountPanel.setLayout(new FlowLayout());
+            updateDiscountPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
+                    "Update Bill Discount",
+                    TitledBorder.CENTER,
+                    TitledBorder.TOP));
+        }else{
+            makeReservationPanel = new JPanel();
+            mainPanel.add(makeReservationPanel);
+            makeReservationPanel.setLayout(new FlowLayout());
+            makeReservationPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
+                    "Make Reservation",
+                    TitledBorder.CENTER,
+                    TitledBorder.TOP));
+        }
     }
 
     //Button actions from here on
