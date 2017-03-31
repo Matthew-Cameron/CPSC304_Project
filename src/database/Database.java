@@ -6,18 +6,9 @@ package database;
  */
 
 
-
-import tables.Reserve_Room_Has_Floor2;
-
-import javax.swing.JOptionPane;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import tables.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.sql.*;
 
 public class Database {
     private static Database instance = null;

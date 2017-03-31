@@ -3,22 +3,20 @@ package GUI;
 /**
  * Created by Matthew on 2017-03-26.
  */
+
 import database.Database;
-import tables.*;
+import tables.Guest;
+import tables.Manager;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
-import java.awt.GridLayout;
-import java.awt.FlowLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
-
-import java.util.LinkedList;
-import java.util.List;
 
 public class HomeScreen {
 
@@ -677,7 +675,7 @@ public class HomeScreen {
     {
         @Override
         public void actionPerformed(ActionEvent e) {
-            new Bills(con);
+            new Bills();
         }
     }
     

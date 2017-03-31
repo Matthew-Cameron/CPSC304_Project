@@ -3,7 +3,6 @@ package GUI;
 /**
  * Created by crypt on 2017/03/30.
  */
-import tables.Bill_Has_Generate_Bill;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,11 +24,17 @@ public class BillDisplay {
 
         frame.setSize(WIDTH, HEIGHT);
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        frame.setLayout(new GridLayout(3, 2));
+        frame.setLayout(new GridLayout(4, 2));
 
-        rs.first();
+        rs.next();
 
+        frame.add(new JLabel("Bill ID: " + rs.getString("billid")));
         frame.add(new JLabel("Room Number: " + rs.getString("roomno")));
+        frame.add(new JLabel("Guest Name: " + rs.getString("uname")));
+        frame.add(new JLabel("Date of Bill: " + rs.getString("timestamp")));
+        frame.add(new JLabel("Amount Total: $" + rs.getString("amtttl")));
+        frame.add(new JLabel("Amount Paid: $" + rs.getString("amtpd")));
+        frame.add(new JLabel("Amount to pay: $" + (rs.getFloat("amtttl") - rs.getFloat("amtpd"))));
 
         frame.pack();
         frame.setVisible(true);

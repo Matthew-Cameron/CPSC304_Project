@@ -1,7 +1,6 @@
 package tables;
 
 import java.sql.Date;
-import java.sql.Timestamp;
 
 /**
  * Created by Matthew on 2017-03-23.

@@ -1,16 +1,15 @@
 package GUI;
 
-import tables.Bill_Has_Generate_Bill;
+import database.Database;
 
 import javax.swing.*;
+import javax.xml.crypto.Data;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.Objects;
 
 /**
  * Created by crypt on 2017/03/30.
@@ -30,9 +29,9 @@ public class Bills {
 
 
     private static Connection con;
-    Bills(Connection con)
+    Bills()
     {
-        this.con = con;
+        this.con = Database.getInstance().getConnection();
         frame = new JFrame("Generate Bill");
         tabs = new JTabbedPane();
         frame.add(tabs);
@@ -86,20 +85,12 @@ public class Bills {
             try
             {
                 System.out.println("GenBill: Bill ID: " + billId.getText());
-                ResultSet rs = con.createStatement().executeQuery("select b.billid as \"billid\", b.AMOUNTDUE as \"amtttl\", b.amountpaid as \"amtpd\", b.dateofbill as \"timestamp\", u.name as \"uname\", b.roomno as \"roomno\" from BILL_HAS_GENERATE_BILL b inner join USERS u ON b.guserid = u.USERID where b.billid = " + billId.getText().trim() + " order by b.dateofbill desc;");
-                if(rs.next())
-                {
-                    System.out.println("Got to next");
-                    new BillDisplay(rs);
-                }
-                else
-                {
-                    throw new SQLException("No results found.");
-                }
+                ResultSet rs = con.createStatement().executeQuery("select b.billid as \"billid\", b.AMOUNTDUE as \"amtttl\", b.amountpaid as \"amtpd\", b.dateofbill as \"timestamp\", u.name as \"uname\", b.roomno as \"roomno\" from BILL_HAS_GENERATE_BILL b inner join USERS u ON b.guserid = u.USERID where b.billid = " + billId.getText().trim() + " order by b.dateofbill desc");
+                new BillDisplay(rs);
             }
             catch (SQLException gbbe)
             {
-                JOptionPane.showMessageDialog(frame, "Unable to find specific bill. Selection criteria is returns more than or less than one result.");
+                JOptionPane.showMessageDialog(frame, "Unable to find bill with ID " + billId.getText() + ". Please check your input again.");
             }
         }
     }
@@ -111,20 +102,13 @@ public class Bills {
             try
             {
                 System.out.println("GenBill: Name is: " + gname.getText() + " and roomno is: " + roomno.getText());
-                ResultSet rs = con.createStatement().executeQuery("select b.billid as \"billid\", b.AMOUNTDUE as \"amtttl\", b.amountpaid as \"amtpd\", b.dateofbill as \"timestamp\", u.name as \"uname\", b.roomno as \"roomno\" from BILL_HAS_GENERATE_BILL b inner join USERS u ON b.guserid = u.USERID where u.name is like '" + gname.getText() + "' and b.roomno = " + roomno.getText() + " order by b.dateofbill desc;");
-                if(rs.next())
-                {
-                    System.out.println("Got to next");
-                    new BillDisplay(rs);
-                }
-                else
-                {
-                    throw new SQLException("No results found.");
-                }
+                System.out.println("Query is " + "select b.billid as \"billid\", b.AMOUNTDUE as \"amtttl\", b.amountpaid as \"amtpd\", b.dateofbill as \"timestamp\", u.name as \"uname\", b.roomno as \"roomno\" from BILL_HAS_GENERATE_BILL b inner join USERS u ON b.guserid = u.USERID where u.name like '%" + gname.getText() + "%' and b.roomno = " + roomno.getText() + " order by b.dateofbill desc");
+                ResultSet rs = con.createStatement().executeQuery("select b.billid as \"billid\", b.AMOUNTDUE as \"amtttl\", b.amountpaid as \"amtpd\", b.dateofbill as \"timestamp\", u.name as \"uname\", b.roomno as \"roomno\" from BILL_HAS_GENERATE_BILL b inner join USERS u ON b.guserid = u.USERID where u.name like '%" + gname.getText() + "%' and b.roomno = " + roomno.getText() + " order by b.dateofbill desc");
+                new BillDisplay(rs);
             }
             catch (SQLException gbbe)
             {
-                JOptionPane.showMessageDialog(frame, "Unable to find specific bill. Selection criteria is returns more than or less than one result.");
+                JOptionPane.showMessageDialog(frame, "Unable to locate bill with such name and ID. Either such bill does not exists, or please recheck your inputs.");
             }
         }
     }
