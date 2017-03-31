@@ -29,6 +29,8 @@ public class HomeScreen {
     static String sym = "";
     static String[] choices1 = { "AMOUNT =","AMOUNT >", "AMOUNT <" };
     static final JComboBox<String> cb1 = new JComboBox<String>(choices1);
+    static int userid;
+
 
     private static int WIDTH = 1000;
     private static int HEIGHT = 650;
@@ -42,10 +44,13 @@ public class HomeScreen {
     private static JPanel selectionPanel;
     private static JPanel informationPanel;
     private static JPanel simpleOpsPanel;
+    private static JPanel guestDeletionPanel;
     private static JTextField sinText;
     private static JTextField roomText;
     private static JTextField hireText;
     private static JTextField projText;
+    private static JTextField roomDeletedText;
+
 
     // Constructs homescreen for a manager
     public HomeScreen(int userId, boolean isManager) {
@@ -54,7 +59,7 @@ public class HomeScreen {
             try {
                 ResultSet rs = con.createStatement().executeQuery("SELECT * from Users where userid ='" + userId + "'");
                 rs.next();
-                int userid = rs.getInt("USERID");
+                userid = rs.getInt("USERID");
                 String tempusername = rs.getString("USERNAME");
                 String tempname = rs.getString("NAME");
                 String tempphone = rs.getString("PHONENO");
@@ -176,7 +181,7 @@ public class HomeScreen {
             try {
                 ResultSet rs = con.createStatement().executeQuery("SELECT * from Users u, Guest g where u.userid ='" + userId + "' and g.userid ='" + userId + "'");
                 rs.next();
-                int userid = rs.getInt("USERID");
+                userid = rs.getInt("USERID");
                 String tempusername = rs.getString("USERNAME");
                 String tempname = rs.getString("NAME");
                 String tempphone = rs.getString("PHONENO");
@@ -210,9 +215,25 @@ public class HomeScreen {
                 JButton viewRooms = new JButton("View Available Rooms");
                 viewRooms.addActionListener(new viewRooms());
                 buttonPanel.add(viewRooms);
-                JButton changeRes = new JButton("Change Reservation");
-                changeRes.addActionListener(new changeReservation());
-                buttonPanel.add(changeRes);
+                JButton viewRes = new JButton("View Reservation");
+                viewRes.addActionListener(new viewReservation());
+                buttonPanel.add(viewRes);
+                JButton deleteRes = new JButton("Delete All Reservations");
+                deleteRes.addActionListener(new viewReservationAfterDeletion());
+                buttonPanel.add(deleteRes);
+
+                JLabel deleteRoomLabel = new JLabel("Delete Your Reservation RoomNo:");
+                deleteRoomLabel.setBounds(200, 100, 80, 25);
+                simpleOpsPanel.add(deleteRoomLabel);
+                roomDeletedText = new JTextField(7);
+                roomDeletedText.setBounds(100, 40, 50, 25);
+                simpleOpsPanel.add(roomDeletedText);
+                JButton deleteResButton = new JButton();
+                deleteResButton.setText("Submit");
+                deleteResButton.addActionListener(new viewReservationAfterOneDeletion());
+                simpleOpsPanel.add(deleteResButton);
+
+
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
@@ -557,7 +578,7 @@ public class HomeScreen {
                     ResultSet countrs = con.createStatement().executeQuery("SELECT  COUNT(*) FROM reserve_room_has_floor2");
                     countrs.next();
 
-                    ResultDisplay rd = new ResultDisplay(rs, countrs.getInt(1), "Rooms", Arrays.asList("RoomNo", "Type", "Flor", "Guest", "BookingNo", "From date", "To date", "Beds"), Arrays.asList("ROOMNO", "TYPEOFROOM", "FLOORNO", "GUSERID", "BOOKINGNO", "FROMDATE", "TODATE", "NUMOFBEDS"));
+                    ResultDisplay rd = new ResultDisplay(rs, countrs.getInt(1), "Rooms", Arrays.asList("RoomNo", "Type", "Floor", "Guest", "BookingNo", "From date", "To date", "Beds"), Arrays.asList("ROOMNO", "TYPEOFROOM", "FLOORNO", "GUSERID", "BOOKINGNO", "FROMDATE", "TODATE", "NUMOFBEDS"));
 
 
                 } catch (SQLException vre1) {
@@ -571,6 +592,61 @@ public class HomeScreen {
         }
     }
 
+    private static class viewReservationAfterOneDeletion implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String givenRoom = roomDeletedText.getText();
+            try {
+                int num = Integer.parseInt(givenRoom);
+
+                try {
+                    if (Database.getInstance().deleteRoomNo(num)) {
+                        JOptionPane.showMessageDialog(null, "Successfully deleted reservation in " + givenRoom, "Success", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Failed to delete reservation in" + givenRoom, "Error", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    ResultSet rs = con.createStatement().executeQuery("SELECT  * FROM reserve_room_has_floor2 where guserId = " + userid);
+                    ResultSet countrs = con.createStatement().executeQuery("SELECT  COUNT(*) FROM reserve_room_has_floor2 where guserId = " + userid);
+                    countrs.next();
+
+                    ResultDisplay rd = new ResultDisplay(rs, countrs.getInt(1), "Rooms", Arrays.asList("RoomNo", "Type", "Floor", "Guest", "BookingNo", "From date", "To date", "Beds"), Arrays.asList("ROOMNO", "TYPEOFROOM", "FLOORNO", "GUSERID", "BOOKINGNO", "FROMDATE", "TODATE", "NUMOFBEDS"));
+
+
+                } catch (SQLException vre1) {
+                    JOptionPane.showMessageDialog(frame, vre1.getErrorCode() + " " + vre1.getMessage() + '\n', "Error ", JOptionPane.ERROR_MESSAGE);
+                    System.out.println(vre1.getMessage());
+                    System.out.println(Arrays.toString(vre1.getStackTrace()));
+                }
+            } catch (NumberFormatException f) {
+                JOptionPane.showMessageDialog(null, "Did not input an integer ", "Fail", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+    }
+
+    private static class viewReservationAfterDeletion implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+                try {
+                    if (Database.getInstance().deleteAllReservation(userid)) {
+                        JOptionPane.showMessageDialog(null, "Successfully deleted all reservations " + userid, "Success", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Failed to delete reservations " + userid, "Error", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    ResultSet rs = con.createStatement().executeQuery("SELECT *  FROM reserve_room_has_floor2 where guserid = " + userid);
+                    ResultSet countrs = con.createStatement().executeQuery("SELECT  COUNT(*) FROM reserve_room_has_floor2 where guserid = " + userid);
+                    countrs.next();
+
+                    ResultDisplay rd = new ResultDisplay(rs, countrs.getInt(1), "Rooms", Arrays.asList("RoomNo", "Type", "Floor", "Guest", "BookingNo", "From date", "To date", "Beds"), Arrays.asList("ROOMNO", "TYPEOFROOM", "FLOORNO", "GUSERID", "BOOKINGNO", "FROMDATE", "TODATE", "NUMOFBEDS"));
+
+
+                } catch (SQLException vre1) {
+                    JOptionPane.showMessageDialog(frame, vre1.getErrorCode() + " " + vre1.getMessage() + '\n', "Error ", JOptionPane.ERROR_MESSAGE);
+                    System.out.println(vre1.getMessage());
+                    System.out.println(Arrays.toString(vre1.getStackTrace()));
+                }
+        }
+    }
 
 
     private static class makeReservation implements ActionListener {
@@ -606,11 +682,16 @@ public class HomeScreen {
         }
     }
 
-    private static class changeReservation implements ActionListener {
+    private static class viewReservation implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
-                ResultSet rs = con.createStatement().executeQuery("select * from user_tables");
+                ResultSet rs = con.createStatement().executeQuery("SELECT  * FROM reserve_room_has_floor2 where guserId = " + userid);
+                ResultSet countrs = con.createStatement().executeQuery("SELECT  COUNT(*) FROM reserve_room_has_floor2 where guserId = " + userid);
+                countrs.next();
+
+                ResultDisplay rd = new ResultDisplay(rs, countrs.getInt(1), "Rooms", Arrays.asList("RoomNo", "Type", "Floor", "Guest", "BookingNo", "From date", "To date", "Beds"), Arrays.asList("ROOMNO", "TYPEOFROOM", "FLOORNO", "GUSERID", "BOOKINGNO", "FROMDATE", "TODATE", "NUMOFBEDS"));
+
 
             } catch (SQLException vre1) {
                 JOptionPane.showMessageDialog(frame, vre1.getErrorCode() + " " + vre1.getMessage() + '\n', "Fail", JOptionPane.ERROR_MESSAGE);

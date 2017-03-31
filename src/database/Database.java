@@ -73,6 +73,17 @@ public class Database {
         return result == 1;
     }
 
+    public boolean deleteAllReservation(int guestID) throws SQLException{
+        int result = connection.createStatement().executeUpdate("update reserve_room_has_floor2 set guserID = null, bookingNo = null, fromDate = null, toDate = null where guserID =  " + guestID);
+        return result == 1;
+    }
+
+    public boolean deleteOneReservation(int guestID, int roomNo) throws SQLException{
+        int result = connection.createStatement().executeUpdate("update reserve_room_has_floor2 set guserID = null, bookingNo = null, fromDate = null, toDate = null where guserID =  " + guestID + "roomNo=" + roomNo);
+        return result == 1;
+    }
+
+
 
 }
 
