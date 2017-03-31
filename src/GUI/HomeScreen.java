@@ -680,5 +680,36 @@ public class HomeScreen {
             new Bills(con);
         }
     }
+    
+    //update query
+    private static class updateDiscount implements ActionListener
+    {
+        @Override
+            public void actionPerformed(ActionEvent e) {
+            try {
+                int num = 110;
+
+                try {
+                    if (Database.getInstance().updateDiscount(num)) {
+                        JOptionPane.showMessageDialog(null, "Successfully applied a discount of " + num, "percent; congratulations!", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Failed to apply discount ", "Error", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    ResultSet rs = con.createStatement().executeQuery("SELECT  * FROM Discounts");
+                    ResultSet countrs = con.createStatement().executeQuery("SELECT  COUNT(*) FROM Discounts");
+                    countrs.next();
+
+                    ResultDisplay rd = new ResultDisplay(rs, countrs.getInt(1), "List of Discounts", Arrays.asList("Amount", "BillID", "ManagerUserID"), Arrays.asList("AMOUNT", "BILLID", "MUSERID"));
+
+                } catch (SQLException vre1) {
+                    JOptionPane.showMessageDialog(frame, vre1.getErrorCode() + " " + vre1.getMessage() + '\n', "Error ", JOptionPane.ERROR_MESSAGE);
+                    System.out.println(vre1.getMessage());
+                    System.out.println(Arrays.toString(vre1.getStackTrace()));
+                }
+            } catch (NumberFormatException f) {
+                JOptionPane.showMessageDialog(null, "Did not input a valid number ", "Fail", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+    }
 
 }
