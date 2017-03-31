@@ -95,7 +95,7 @@ public class HomeScreen {
                 findHousekeepersAssignedToAllRoom.addActionListener(new findHousekeepersAssignedToAllRoom());
                 buttonPanel.add(findHousekeepersAssignedToAllRoom);
 
-                JLabel sinLabel = new JLabel("Delete SIN");
+                JLabel sinLabel = new JLabel("Delete housekeeper with SIN");
                 sinLabel.setBounds(200, 100, 80, 25);
                 simpleOpsPanel.add(sinLabel);
                 sinText = new JTextField(7);
@@ -109,7 +109,7 @@ public class HomeScreen {
                 viewSer.addActionListener(new viewServicesAssigns());
                 buttonPanel.add(viewSer);
 
-                JLabel roomNoLabel = new JLabel("Delete room");
+                JLabel roomNoLabel = new JLabel("Delete room with roomNo:");
                 roomNoLabel.setBounds(200, 100, 80, 25);
                 simpleOpsPanel.add(roomNoLabel);
                 roomText = new JTextField(7);
@@ -120,7 +120,7 @@ public class HomeScreen {
                 submitRButton.addActionListener(new viewDeleteRoom());
                 simpleOpsPanel.add(submitRButton);
 
-                JLabel addHouseLabel = new JLabel("Hire housekeeper");
+                JLabel addHouseLabel = new JLabel("Hire housekeeper with SIN");
                 addHouseLabel.setBounds(200, 100, 80, 25);
                 simpleOpsPanel.add(addHouseLabel);
                 hireText = new JTextField(7);
