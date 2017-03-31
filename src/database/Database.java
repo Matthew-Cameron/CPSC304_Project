@@ -66,6 +66,12 @@ public class Database {
         int result = connection.createStatement().executeUpdate("insert  into housekeeper2 values(NULL, NULL, NULL, NULL," + sin + ")");
         return result == 1;
     }
+    
+    //update query
+    public boolean updateDiscount(int amt) throws SQLException{
+        int result = connection.createStatement().executeUpdate("update discounts set amount = " + amt + " where billid = 1010 and mUserid = 1801");
+        return result == 1;
+    }
 
 
 }
