@@ -61,7 +61,7 @@ public class HomeScreen {
                 Manager managerUser = new Manager(tempname, tempphone, userid, tempusername, null, 0);
                 System.out.println("Manager: " + managerUser.getName());
 
-                generateStructure(managerUser);
+                generateStructure();
 
                 JLabel name = new JLabel("Name: " + managerUser.getName());
                 informationPanel.add(name);
@@ -181,7 +181,7 @@ public class HomeScreen {
                 int tempnightsStayedBefore = rs.getInt("NIGHTS_STAYED_BEFORE");
                 Guest guestUser = new Guest(tempname, tempphone, userid, tempusername, null, tempmembershipType, tempaddress, tempnightsStayedBefore);
                 System.out.println("Guest: " + guestUser.getName());
-                generateStructure(guestUser);
+                generateStructure();
 
                 JLabel name = new JLabel("Name: " + guestUser.getName());
                 informationPanel.add(name);
@@ -217,7 +217,7 @@ public class HomeScreen {
     }
 
     // Creates layout of homescreen
-    private void generateStructure(User u) {
+    private void generateStructure() {
         frame = new JFrame("Hotel");
         frame.setSize(WIDTH, HEIGHT);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
