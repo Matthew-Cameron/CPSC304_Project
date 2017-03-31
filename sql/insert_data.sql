@@ -1,24 +1,23 @@
-
 insert into users
-values(1893, 'bob', 'bob', '6046789012', 'Bob_Dvorak');
+values(1893, 'bob', 'bob', '6046789012', 'Bob_Smith');
 insert into users
-values(1801, 'beethoven', 'Di3YueZhang', '6047890123', 'Ludwig_Beethoven');
+values(1801, 'john', 'abced', '6047890123', 'John_Liu');
 insert into users
-values(1798, 'haydn', 'YeyingFeiyingBailing', '6048901234', 'Joseph_Haydn');
+values(1798, 'dave', 'qatd', '6048901234', 'Dave_Johnson');
 insert into users
-values(1892, 'tchaikovsky', 'ShengBidebao', '6049012345', 'Pyotr_Tchaikovsky');
+values(1892, 'jeff', 'abc', '6049012345', 'Jeff_Zhao');
 insert into users
-values(1791, 'mozart', 'YezhiNvwang', '6040123456', 'Wolfgang_Mozart');
+values(1791, 'bobby', 'df3456', '6040123456', 'Bobby_Lin');
 insert into users
-values(1111, 'joe', 'joe', '6048888888', 'Joe_Johnson');
+values(1111, 'joe', 'joe', '6048888888', 'Joe_Pratt');
 insert into users
-values(2222, 'boab', 'boab', '6043333331', 'Boab_Smith');
+values(2222, 'erica11', '16ab', '6043333331', 'Erica_Lewis');
 insert into users
-values(3333, 'willa', 'willa', '6045555551', 'Willa_Smith');
+values(3333, 'will', 'willa', '6045555551', 'Will_Trump');
 insert into users
-values(5555, 'jonjon', 'jonjon', '6048888881', 'Jon_Johnson');
+values(5555, 'jon', 'jonjon', '6048888881', 'Jon_Hong');
 insert into users
-values(7777, 'bev', 'bev', '6049879871', 'Bevin_Knowles');
+values(7777, 'mark', 'bev', '6049879871', 'Mark_Sedin');
  
 insert into manager
 values(90000, 1893);
@@ -34,13 +33,13 @@ values(40000, 1791);
 insert into guest
 values('Standard', '9_Downing_Street', 0, 1111);
 insert into guest
-values('VIP', '10_Downing_Street', 0, 2222);
+values('VIP', '10_Downing_Street', 30, 2222);
 insert into guest
-values('VIP', '14_Gaglardi_Way', 0, 3333);
+values('VIP', '14_Gaglardi_Way', 25, 3333);
 insert into guest
-values('Standard', '24_Halifax_Street', 0, 5555);
+values('Standard', '24_Halifax_Street', 16, 5555);
 insert into guest
-values('Standard', '1334_1st_Avenue', 0, 7777);
+values('Standard', '1334_1st_Avenue', 5, 7777);
 
 insert into floor
 values(1);
@@ -64,7 +63,6 @@ insert into reserve_Room_Has_Floor1
 values(299.99, 'Suite');
 insert into reserve_Room_Has_Floor1
 values(399.99, 'Double');
-insert into reserve_Room_Has_Floor1
 
 insert into housekeeper2
 values(20.00,'Beds', '6041234567', 'Isaac_Newton',171717);
@@ -105,22 +103,28 @@ values(313, 'Luxury', 3,2222, 133, '2017-01-01', '2017-02-02',3);
 insert into reserve_Room_Has_Floor2
 values(413, 'Honeymoon_Suite', 4,3333, 134, '2017-01-01', '2017-02-02',1);
 insert into reserve_Room_Has_Floor2
-values(513, 'Suite',  5, NULL, NULL, NULL, NULL,2);
+values(513, 'Suite',  5, 1111, 135, '2017-02-03', '2017-02-04',2);
 insert into reserve_Room_Has_Floor2
-values(113, 'Double',   1,  NULL, NULL, NULL, NULL,3);
+values(113, 'Double',   1,  1111, 136, '2017-02-05', '2017-02-06',3);
 insert into reserve_Room_Has_Floor2
-values(613, 'Honeymoon_Suite',  1, NULL, NULL, NULL, NULL,4);
+values(613, 'Honeymoon_Suite',  3, NULL, NULL, NULL, NULL,4);
+insert into reserve_Room_Has_Floor2
+values(214, 'Honeymoon_Suite',  2, NULL, NULL, NULL, NULL,4);
+insert into reserve_Room_Has_Floor2
+values(215, 'Standard',  4, NULL, NULL, NULL, NULL,4);
+insert into reserve_Room_Has_Floor2
+values(100, 'Double',  5, NULL, NULL, NULL, NULL,3);
  
 insert into bill_Has_Generate_Bill
-values(999.99, 1010, 20.00, '2017-05-02', 1111,213,1893);
+values(599.99, 1010, 20.00, '2017-05-02', 1111,213,1893);
 insert into bill_Has_Generate_Bill
-values(999.99, 1011, 40.00, '2017-05-02', 2222,113,1801);
+values(699.99, 1011, 40.00, '2017-05-02', 2222,113,1801);
 insert into bill_Has_Generate_Bill
-values(999.99, 1012, 60.00, '2017-05-02', 3333,213,1798);
+values(499.99, 1012, 60.00, '2017-05-02', 3333,213,1798);
 insert into bill_Has_Generate_Bill
-values(999.99, 1013, 100.00, '2017-05-02', 5555,113,1798);
+values(599.99, 1013, 100.00, '2017-05-02', 5555,113,1798);
 insert into bill_Has_Generate_Bill
-values(999.99, 1014, 0.00, '2017-05-02', 7777,113,1798);
+values(399.99, 1014, 80.00, '2017-05-02', 7777,113,1798);
 insert into bill_Has_Generate_Bill
 values(456.5, 1054, 456.5, '2017-05-02',5555,213,1798);
  
