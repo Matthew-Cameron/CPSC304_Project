@@ -17,6 +17,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.Random;
 
 public class HomeScreen {
 
@@ -42,14 +43,16 @@ public class HomeScreen {
     private static JPanel selectionPanel;
     private static JPanel informationPanel;
     private static JPanel simpleOpsPanel;
-
     private static JPanel guestDeletionPanel;
-
+    private static JPanel makeReservationPanel;
     private static JPanel updateDiscountPanel;
     private static JTextField sinText;
     private static JTextField roomText;
     private static JTextField hireText;
     private static JTextField projText;
+    private static JTextField roomIdText;
+    private static JTextField fromText;
+    private static JTextField toText;
 
     private static JTextField roomDeletedText;
 
@@ -254,6 +257,28 @@ public class HomeScreen {
                 deleteResButton.addActionListener(new viewReservationAfterOneDeletion());
                 simpleOpsPanel.add(deleteResButton);
 
+                JLabel lbl2 = new JLabel("Reserve room number:");
+                lbl2.setVisible(true);
+                makeReservationPanel.add(lbl2);
+                roomIdText = new JTextField(7);
+                roomIdText.setBounds(100, 40, 100, 25);
+                makeReservationPanel.add(roomIdText);
+                JLabel lbl3 = new JLabel("from date (YYYY-MM-DD):");
+                lbl3.setVisible(true);
+                makeReservationPanel.add(lbl3);
+                fromText = new JTextField(7);
+                fromText.setBounds(100, 40, 100, 25);
+                makeReservationPanel.add(fromText);
+                JLabel lbl4 = new JLabel("to date (YYYY-MM-DD):");
+                lbl4.setVisible(true);
+                makeReservationPanel.add(lbl4);
+                toText = new JTextField(7);
+                toText.setBounds(100, 40, 100, 25);
+                makeReservationPanel.add(toText);
+                JButton btn2 = new JButton("OK");
+                btn2.addActionListener(new viewMakeReservationQuery());
+                makeReservationPanel.add(btn2);
+
 
             } catch (Exception e) {
                 System.out.println(e.getMessage());
@@ -326,6 +351,14 @@ public class HomeScreen {
         updateDiscountPanel.setLayout(new FlowLayout());
         updateDiscountPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
                 "Update Bill Discount",
+                TitledBorder.CENTER,
+                TitledBorder.TOP));
+
+        makeReservationPanel = new JPanel();
+        mainPanel.add(makeReservationPanel);
+        makeReservationPanel.setLayout(new FlowLayout());
+        makeReservationPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
+                "Make Reservation",
                 TitledBorder.CENTER,
                 TitledBorder.TOP));
     }
@@ -613,6 +646,38 @@ public class HomeScreen {
                 countrs.next();
 
                 ResultDisplay rd = new ResultDisplay(rs, countrs.getInt(1), "Discounts", Arrays.asList("Amount", "Bill Id", "Manager Id"), Arrays.asList("AMOUNT", "BILLID", "MUSERID"));
+
+
+            } catch (SQLException vre1) {
+                JOptionPane.showMessageDialog(frame, vre1.getErrorCode() + " " + vre1.getMessage() + '\n', "Error ", JOptionPane.ERROR_MESSAGE);
+                System.out.println(vre1.getMessage());
+                System.out.println(Arrays.toString(vre1.getStackTrace()));
+            }
+        }
+    }
+
+    private static class viewMakeReservationQuery implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String roomid = roomIdText.getText();
+            String from = fromText.getText();
+            String to = toText.getText();
+            String gid = Integer.toString(userid);
+            Random rand = new Random();
+            String bnum = Integer.toString(rand.nextInt(999) + 1);
+
+
+            try {
+                if (Database.getInstance().makeReservation(roomid, from, to, gid, bnum)) {
+                    JOptionPane.showMessageDialog(null, "Successfully reserved room " + roomid, "Success", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Failed to reserve room " + roomid, "Error", JOptionPane.INFORMATION_MESSAGE);
+                }
+                ResultSet rs = con.createStatement().executeQuery("SELECT * FROM RESERVE_ROOM_HAS_FLOOR2 where GUSERID = " + gid);
+                ResultSet countrs = con.createStatement().executeQuery("SELECT  COUNT(*) FROM RESERVE_ROOM_HAS_FLOOR2 where GUSERID = " + gid);
+                countrs.next();
+
+                ResultDisplay rd = new ResultDisplay(rs, countrs.getInt(1), "Reservations", Arrays.asList("Room", "Type", "Floor Number", "Guest Id", "Booking Number", "From", "To", "Number of Beds"), Arrays.asList("ROOMNO", "TYPEOFROOM", "FLOORNO", "GUSERID", "BOOKINGNO", "FROMDATE", "TODATE", "NUMOFBEDS"));
 
 
             } catch (SQLException vre1) {

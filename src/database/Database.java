@@ -64,6 +64,11 @@ public class Database {
         return result == 1;
     }
 
+    public boolean makeReservation(String rid, String from, String to, String gid, String bnum) throws SQLException{
+        int result = connection.createStatement().executeUpdate("update RESERVE_ROOM_HAS_FLOOR2 set FROMDATE = '" + from + "', TODATE = '" + to + "', GUSERID = '" + gid + "', BOOKINGNO = '" + bnum + "' where ROOMNO = " + rid);
+        return result == 1;
+    }
+
     public boolean deleteAllReservation(int guestID) throws SQLException{
         int result = connection.createStatement().executeUpdate("update reserve_room_has_floor2 set guserID = null, bookingNo = null, fromDate = null, toDate = null where guserID =  " + guestID);
         return result == 1;
