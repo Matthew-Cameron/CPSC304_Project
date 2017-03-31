@@ -199,6 +199,10 @@ public class HomeScreen {
                 btn1.addActionListener(new viewDiscountBillQuery());
                 updateDiscountPanel.add(btn1);
 
+                JButton logout = new JButton("Logout");
+                logout.addActionListener(new viewLoginScreen());
+                mainPanel.add(logout);
+
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
@@ -280,6 +284,10 @@ public class HomeScreen {
                 JButton btn2 = new JButton("OK");
                 btn2.addActionListener(new viewMakeReservationQuery());
                 makeReservationPanel.add(btn2);
+
+                JButton logout = new JButton("Logout");
+                logout.addActionListener(new viewLoginScreen());
+                mainPanel.add(logout);
 
 
             } catch (Exception e) {
@@ -892,6 +900,13 @@ public class HomeScreen {
         @Override
         public void actionPerformed(ActionEvent e) {
             new Bills();
+        }
+    }
+
+    private static class viewLoginScreen implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new LoginScreen();
         }
     }
 }
