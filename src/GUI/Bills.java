@@ -85,9 +85,11 @@ public class Bills {
         public void actionPerformed(ActionEvent e) {
             try
             {
-                ResultSet rs = con.createStatement().executeQuery("select b.billid as \"Bill ID\", b.AMOUNTDUE as \"Amount Total\", b.amountpaid as \"Amount Paid\", b.dateofbill as \"Timestamp\", u.name as \"Guest\", b.roomno as \"Room Number\" from BILL_HAS_GENERATE_BILL b inner join USERS u ON b.guserid = u.USERID where b.billid = " + billId.getText() + " order by b.dateofbill desc;");
+                System.out.println("GenBill: Bill ID: " + billId.getText());
+                ResultSet rs = con.createStatement().executeQuery("select b.billid as \"billid\", b.AMOUNTDUE as \"amtttl\", b.amountpaid as \"amtpd\", b.dateofbill as \"timestamp\", u.name as \"uname\", b.roomno as \"roomno\" from BILL_HAS_GENERATE_BILL b inner join USERS u ON b.guserid = u.USERID where b.billid = " + billId.getText().trim() + " order by b.dateofbill desc;");
                 if(rs.next())
                 {
+                    System.out.println("Got to next");
                     new BillDisplay(rs);
                 }
                 else
@@ -108,9 +110,11 @@ public class Bills {
         public void actionPerformed(ActionEvent e) {
             try
             {
-                ResultSet rs = con.createStatement().executeQuery("select b.billid as \"Bill ID\", b.AMOUNTDUE as \"Amount Total\", b.amountpaid as \"Amount Paid\", b.dateofbill as \"Timestamp\", u.name as \"Guest\", b.roomno as \"Room Number\" from BILL_HAS_GENERATE_BILL b inner join USERS u ON b.guserid = u.USERID where u.name is like '" + gname.getText() + "' and b.roomno = " + roomno.getText() + " order by b.dateofbill desc;");
+                System.out.println("GenBill: Name is: " + gname.getText() + " and roomno is: " + roomno.getText());
+                ResultSet rs = con.createStatement().executeQuery("select b.billid as \"billid\", b.AMOUNTDUE as \"amtttl\", b.amountpaid as \"amtpd\", b.dateofbill as \"timestamp\", u.name as \"uname\", b.roomno as \"roomno\" from BILL_HAS_GENERATE_BILL b inner join USERS u ON b.guserid = u.USERID where u.name is like '" + gname.getText() + "' and b.roomno = " + roomno.getText() + " order by b.dateofbill desc;");
                 if(rs.next())
                 {
+                    System.out.println("Got to next");
                     new BillDisplay(rs);
                 }
                 else

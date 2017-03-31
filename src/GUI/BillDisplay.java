@@ -27,7 +27,9 @@ public class BillDisplay {
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setLayout(new GridLayout(3, 2));
 
-        frame.add(new JLabel(rs.getString("Room No")));
+        rs.first();
+
+        frame.add(new JLabel("Room Number: " + rs.getString("roomno")));
 
         frame.pack();
         frame.setVisible(true);
