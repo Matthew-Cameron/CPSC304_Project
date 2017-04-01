@@ -239,9 +239,7 @@ public class HomeScreen {
                 JLabel userType = new JLabel("User Type: Guest");
                 informationPanel.add(userType);
 
-                JButton makeRes = new JButton("Create a Reservation");
-                makeRes.addActionListener(new makeReservation());
-                buttonPanel.add(makeRes);
+                
                 JButton viewRooms = new JButton("View Available Rooms");
                 viewRooms.addActionListener(new viewRooms());
                 buttonPanel.add(viewRooms);
@@ -786,20 +784,6 @@ public class HomeScreen {
                     System.out.println(vre1.getMessage());
                     System.out.println(Arrays.toString(vre1.getStackTrace()));
                 }
-        }
-    }
-
-
-    private static class makeReservation implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            try {
-                ResultSet rs = con.createStatement().executeQuery("select * from guest");
-            } catch (SQLException vre1) {
-                JOptionPane.showMessageDialog(frame, vre1.getErrorCode() + " " + vre1.getMessage() + '\n', "Fail", JOptionPane.ERROR_MESSAGE);
-                System.out.println(vre1.getMessage());
-                System.out.println(Arrays.toString(vre1.getStackTrace()));
-            }
         }
     }
 
